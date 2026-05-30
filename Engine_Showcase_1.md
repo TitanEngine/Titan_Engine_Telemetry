@@ -1,4 +1,4 @@
-# Titan Engine 
+# Titan Engine Showcase
 
 [![Titan Engine Cinematic Singularity](https://img.youtube.com/vi/aA7iZdflfns/maxresdefault.jpg)](https://youtu.be/aA7iZdflfns)
 
