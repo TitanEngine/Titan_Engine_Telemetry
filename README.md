@@ -1,18 +1,22 @@
 # Titan_Engine_Telemetry
 
 
-# **Titan Engine - Performance Telemetry & Hardware Profiling**
+# Titan Engine - Performance Telemetry & Hardware Profiling
 
-## **1. Physics Engine Telemetry: Unstable vs. Stable Simulation**
+This document contains deep-dive telemetry data, hardware profiling, and mathematical analysis of the Titan Engine. It demonstrates the direct results of low-level optimizations including zero-copy ReBAR pipelines, Temporal Gauss-Seidel solver stabilization, and bare-metal Subgroup operations.
 
-### **Initial State: Unstable Simulation**
+---
+
+## 1. Physics Solver Stabilization
+
+### Initial State: Unstable Simulation
 This is a two-panel dashboard visualizing physics engine telemetry, showing an unstable physics simulation.
 * **Top Graph (Global Energy Dissipation & Velocity Decay):** The x-axis represents the Simulation Frame. There is a massive spike right at the start (~Frame 30), where Total Kinetic Energy (red line) shoots above 200 Joules and Max Velocity (blue dashed line) spikes to ~3.5 m/s. Following this, the red line drops to zero, but the blue line continually jitters up and down above zero for the rest of the simulation. This indicates that while massive momentum has settled, objects are continually vibrating or jittering (micro-velocities).
 * **Bottom Graph (Constraint Stabilization: Active vs. Sleep State):** This graph proves the instability. Physics engines put bodies to "sleep" (deactivated to save CPU) when they stop moving. We see a repeating sawtooth wave pattern. The yellow line (Active bodies) repeatedly falls toward -50 and rises back, crossing over with the green line (Sleeping bodies), which sweeps violently up to ~110 and falls again. A white vertical line denotes "First Body Sleeps (frame 60)," but instead of stabilizing, the engine enters an endless loop of waking objects up and putting them to sleep due to continuous micro-collisions.
 
 ![Unstable Physics Dashboard](https://raw.githubusercontent.com/TitanEngine/Titan_Engine_Telemetry/main/Code_Generated_Image%20(8).png)
 
-### **Resolved State: Complete Simulation Stability**
+### Resolved State: Complete Simulation Stability
 This image shows the successful optimization and complete simulation stability after applying advanced Temporal Gauss-Seidel solver techniques. Contrast this with the unstable graph.
 * **Top Graph (System Energy):** Identical chaotic start initially; however, after the objects finish falling into place and initial energy dissipates (frame 100 onwards), velocity jitter has visibly dampened closer to the baseline.
 * **Bottom Graph (Contact Graph Sleep State Transitions):** This holds the most crucial takeaway. Unlike the saw-toothed loop from the earlier example, this graph demonstrates flawless collision resolution by the solver algorithm. A vertical white dotted line represents frame 60 ("Stack Stabilization Begins"). Immediately after crossing this line, the count of Active/Awake bodies (yellow line) plunges smoothly in a matter of frames nearly straight to 0. Simultaneously, the count of Sleeping bodies (green line) surges perfectly symmetrically to fill the capacity (~55 entities). Most impressively, these two paths transform into perfect horizontal parallel flatlines extending toward the end (Frame 2000), proving all rigid-body motion has permanently stopped and the physics engine solver can essentially power down to minimal idle use until new outside forces are introduced.
@@ -21,7 +25,7 @@ This image shows the successful optimization and complete simulation stability a
 
 ---
 
-## **2. Relative Visualization: Frame Pacing vs Dispatch Consistency vs ALU Workload**
+## 2. Frame Pacing and ALU Workload
 
 This is a complex three-panel chart visualizing graphics rendering performance under a strictly constant geometric load.
 * **Top Panel (Latency):** Tracks render latency in milliseconds. A thick blue fuzz runs along the 1.5ms baseline, representing average frame times. Spiking rapidly upward are red bars tracking the "1% Low Max Spike." One massive rendering stall happens around 1 second, jumping nearly to 8ms. This graph indicates that while baseline pacing is fine, consistency is severely flawed due to spikes (stutters).
@@ -32,7 +36,7 @@ This is a complex three-panel chart visualizing graphics rendering performance u
 
 ---
 
-## **3. System Throughput & Consistency Under Heavy Geometry Workload (1M Cubes)**
+## 3. System Throughput Under Heavy Workload
 
 This is a focused, wide-format single graph focused entirely on raw frame throughput.
 * The visualization tracks Instant FPS (shown as a dense green jagged line) over a timeframe of 17.5 seconds.
@@ -43,7 +47,7 @@ This is a focused, wide-format single graph focused entirely on raw frame throug
 
 ---
 
-## **4. Render Latency Variance Remains Tightly Bounded Over Time**
+## 4. Render Latency Variance
 
 This visualization is a latency consistency line chart with filled shading.
 * Instead of scatter or instant points, this displays windowed trendlines. The dark blue, smooth, flat line hovering just above 1.5 ms illustrates the Average Latency—the base rendering pipeline operates smoothly without fail.
@@ -54,7 +58,7 @@ This visualization is a latency consistency line chart with filled shading.
 
 ---
 
-## **5. System Baseline Rendering Performance**
+## 5. System Baseline Rendering Performance
 
 This visualization is a mathematical Scatter Plot analyzing rendering latency distribution.
 * The core shapes are plotted to establish statistical averages (labeled sustaining 1M Cubes and 8M Vertices). Because the plot matches x against its mathematical inverse (y ∝ 1/x or roughly FPS vs rendering time in milliseconds), it forms a sweeping, perfect downward hyperbola curve ranging from zero up to >4000 FPS.
