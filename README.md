@@ -30,78 +30,86 @@
 
 ![Peak VRAM Footprint Reduction](./media/vram_footprint_reduction.png)
 
-| Memory Sub-Region | Contiguous BDA Data Structure | Array Size (1M Particles) | 64-Byte Cache Lines | Alignment Padding Waste | L1/L2 Cache Line Efficiency |
-| --- | --- | --- | --- | --- | --- |
-| Predicted Positions | vec4[1,000,000] (16-Byte SIMD) | 16.0 MB | 262,144 | **0 Bytes** | **100.0%** |
-| Velocities & Rotations | vec4[1,000,000] (16-Byte SIMD) | 16.0 MB | 262,144 | **0 Bytes** | **100.0%** |
-| BVH Spatial AABB Tree | AabbNode[1,000,000] (32-Byte Packed) | 32.0 MB | 524,288 | **0 Bytes** | **100.0%** |
-| Material & Thermodynamic | MatProperty[1,000,000] (64-Byte Full Line) | 64.0 MB | 1,048,576 | **0 Bytes** | **100.0%** |
+| Memory Sub-Region | Data Structure | VRAM Size | Cache Lines | Waste & Efficiency |
+| --- | --- | --- | --- | --- |
+| **Predicted Positions** | `vec4[1M]` (16-Byte SIMD) | 16.0 MB | 262,144 | **0 Bytes Waste (100% Cache)** |
+| **Velocities & Rotations** | `vec4[1M]` (16-Byte SIMD) | 16.0 MB | 262,144 | **0 Bytes Waste (100% Cache)** |
+| **BVH Spatial AABB Tree** | `AabbNode[1M]` (32-Byte) | 32.0 MB | 524,288 | **0 Bytes Waste (100% Cache)** |
+| **Material & Thermodynamic** | `MatProperty[1M]` (64-Byte) | 64.0 MB | 1,048,576 | **0 Bytes Waste (100% Cache)** |
 
-### 2. Pure FL Protocol™ Testing Achievements & Benchmark Performance Logs
+---
+
+### 2. Pure FL Protocol™ Benchmark Performance Logs
 
 ![Pure FL Protocol O(1) Vector Search Latency Curve](./media/vector_search_latency_curve.png)
 
-#### A. Document Search & Scale Tier Benchmark Matrix
-| Dataset Scale (Files) | Substrate Index Nodes | Cold Rebuild (ms) | Warm Rebuild (ms) | Live Active RAM (MB) | Mean Query Latency | Lookup Complexity |
-| --- | --- | --- | --- | --- | --- | --- |
-| **100 Files** | 145 Nodes | **13.78 ms** | **18.28 ms** | 16.12 MB | **220 ns** (0.22 μs) | **O(1) Constant Time** |
-| **1,000 Files** | 1,045 Nodes | **95.22 ms** | **83.74 ms** | 129.40 MB | **150 ns** (0.15 μs) | **O(1) Constant Time** |
-| **5,000 Files** | 5,045 Nodes | **805.59 ms** | **1017.00 ms** | 1603.97 MB | **260 ns** (0.26 μs) | **O(1) Constant Time** |
-| **100000 Files (Est.)** | 100,045 Nodes | **8250.00 ms** | **9100.00 ms** | 14500.00 MB | **310 ns** (0.31 μs) | **O(1) Constant Time** |
+#### A. Document Search & Scale Tier Benchmark
+| Dataset Scale | Substrate Nodes | Rebuild (Cold / Warm) | Active RAM | Query Latency & Complexity |
+| --- | --- | --- | --- | --- |
+| **100 Files** | 145 Nodes | 13.78 ms / 18.28 ms | 16.12 MB | **220 ns** (O(1) Constant) |
+| **1,000 Files** | 1,045 Nodes | 95.22 ms / 83.74 ms | 129.40 MB | **150 ns** (O(1) Constant) |
+| **5,000 Files** | 5,045 Nodes | 805.59 ms / 1,017.0 ms | 1,603.97 MB | **260 ns** (O(1) Constant) |
+| **100,000 Files (Est.)** | 100,045 Nodes | 8.25 s / 9.10 s | 14,500.0 MB | **310 ns** (O(1) Constant) |
 
-#### B. Search Query Latency Percentile Distribution Logs
-| Scale Tier | Substrate Nodes | Mean Lookup | P50 Percentile | P90 Percentile | P95 Percentile | P99 Percentile | Mutex Lock Contention |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| **100 Files** | 145 Nodes | **220 ns** | **210 ns** | **230 ns** | **240 ns** | **260 ns** | **0.00 ns** |
-| **1,000 Files** | 1,045 Nodes | **150 ns** | **140 ns** | **160 ns** | **170 ns** | **180 ns** | **0.00 ns** |
-| **5,000 Files** | 5,045 Nodes | **260 ns** | **250 ns** | **270 ns** | **280 ns** | **300 ns** | **0.00 ns** |
+#### B. Search Latency Percentile Distribution
+| Scale Tier | Mean Lookup | P50 / P90 Latency | P95 / P99 Latency | Lock Contention |
+| --- | --- | --- | --- | --- |
+| **100 Files** | **220 ns** | 210 ns / 230 ns | 240 ns / 260 ns | **0.00 ns** |
+| **1,000 Files** | **150 ns** | 140 ns / 160 ns | 170 ns / 180 ns | **0.00 ns** |
+| **5,000 Files** | **260 ns** | 250 ns / 270 ns | 280 ns / 300 ns | **0.00 ns** |
 
-#### C. Real-World Codebase Ingestion Telemetry (TitanEngine Benchmark)
+#### C. Real-World Codebase Ingestion Telemetry
 | Benchmark Parameter | Tested Metric | Measured Throughput / Duration | Operational Impact |
 | --- | --- | --- | --- |
-| **Real Codebase Ingestion** | 84 Files (1.72 MB Text) | **278,347 Tokens** | Real-world software project ingestion |
-| **Full Cold Index Build** | Complete AST Construction | **651.00 ms** | Zero-lock parallel parsing |
-| **FSM Tokenizer Throughput** | Char-by-Char State Machine | **3,412,850 Tokens / Sec** | 3.4M tokens per second ingestion speed |
-| **String Interner Throughput** | Monotonic Symbol Mapping | **9,420,110 Symbols / Sec** | 9.4M symbols per second interning speed |
-| **10,000 Prefix Search Benchmark** | 392,500 Matched Symbols | **4.19 μs Mean Latency** | Instant bulk symbol retrieval |
+| **Codebase Ingestion** | 84 Files (1.72 MB Text) | **278,347 Tokens** | Software project ingestion |
+| **Cold Index Build** | AST Construction | **651.00 ms** | Zero-lock parallel parsing |
+| **Tokenizer Throughput** | Char State Machine | **3,412,850 Tokens / Sec** | 3.4M tokens/sec speed |
+| **Interner Throughput** | Monotonic Symbols | **9,420,110 Symbols / Sec** | 9.4M symbols/sec interning |
+| **10,000 Prefix Search** | 392,500 Symbols | **4.19 μs Mean Latency** | Bulk symbol retrieval |
 
-#### D. Substrate Slot Operations & Lock-Free Mutability Logs
-| Operation Type | Mean Execution Latency (μs) | Mean Execution Latency (ns) | Table Re-indexing Cost | Complexity Verification |
-| --- | --- | --- | --- | --- |
-| **Block Offset Append** | **0.0029 μs** | **2.9 ns** | **0.00 ms** | **O(1) Bare-Metal PASS** |
-| **Block In-Place Edit** | **< 0.0001 μs** | **< 1.0 ns** | **0.00 ms** | **O(1) Bare-Metal PASS** |
-| **Block Unbind Delete** | **< 0.0001 μs** | **< 1.0 ns** | **0.00 ms** | **O(1) Bare-Metal PASS** |
+#### D. Substrate Slot Operations & Lock-Free Mutability
+| Operation Type | Execution Latency (μs / ns) | Re-indexing Cost | Complexity Verification |
+| --- | --- | --- | --- |
+| **Block Offset Append** | **0.0029 μs** (2.9 ns) | **0.00 ms** | **O(1) Bare-Metal PASS** |
+| **Block In-Place Edit** | **< 0.0001 μs** (< 1.0 ns) | **0.00 ms** | **O(1) Bare-Metal PASS** |
+| **Block Unbind Delete** | **< 0.0001 μs** (< 1.0 ns) | **0.00 ms** | **O(1) Bare-Metal PASS** |
+
+---
 
 ### 3. PCIe Streaming Latency & GPU Warp Occupancy Audit (ReBAR DMA)
 
 ![PCIe DMA ReBAR Throughput & Latency](./media/pcie_dma_rebar_throughput.png)
 
-| Metric Category | Observed Telemetry Metric | Benchmark Target Criteria | Compliance Status |
+| Metric Category | Observed Telemetry | Benchmark Target | Compliance Status |
 | --- | --- | --- | --- |
-| ReBAR DMA Throughput | **12.4 GB/s** | > 10.0 GB/s | PASS |
-| PCIe Transfer Latency Spike | **140 ns** | < 1,000 ns | PASS |
-| GPU Warp Execution Occupancy | **98.2%** | > 90.0% | PASS |
-| CPU Staging Buffer Allocation | **0 Bytes** | 0 Bytes | PASS |
+| **ReBAR DMA Throughput** | **12.4 GB/s** | > 10.0 GB/s | **PASS** |
+| **PCIe Transfer Spike** | **140 ns** | < 1,000 ns | **PASS** |
+| **GPU Warp Occupancy** | **98.2%** | > 90.0% | **PASS** |
+| **CPU Staging Buffer** | **0 Bytes** | 0 Bytes | **PASS** |
 
-### 4. Production Raycasting & Dynamic BVH Refitting Latency Audit
+---
+
+### 4. Production Raycasting & Dynamic BVH Refitting Audit
 
 ![Raycasting Pipeline Latency](./media/raycasting_pipeline_latency.png)
 
-| Active Ray Queries | BVH Refitting Time | Ray Intersection Time | Total Pipeline Latency | Heap Allocation per Query | Frame Rate (FPS) |
-| --- | --- | --- | --- | --- | --- |
-| 10,000 Rays | 0.04 ms | 0.12 ms | 0.16 ms | **0 Bytes** | 60.0 FPS |
-| 50,000 Rays | 0.11 ms | 0.48 ms | 0.59 ms | **0 Bytes** | 60.0 FPS |
-| 100,000 Rays | 0.18 ms | 0.94 ms | 1.12 ms | **0 Bytes** | 60.0 FPS |
+| Active Ray Queries | BVH Refit Time | Intersection Time | Pipeline Latency & FPS | Heap Allocation |
+| --- | --- | --- | --- | --- |
+| **10,000 Rays** | 0.04 ms | 0.12 ms | **0.16 ms** (60 FPS) | **0 Bytes** |
+| **50,000 Rays** | 0.11 ms | 0.48 ms | **0.59 ms** (60 FPS) | **0 Bytes** |
+| **100,000 Rays** | 0.18 ms | 0.94 ms | **1.12 ms** (60 FPS) | **0 Bytes** |
 
-### 5. 1,000,000 Particle Simulation Scaling & Hardware GPU Split
+---
+
+### 5. 1,000,000 Particle Simulation Scaling Audit
 
 ![1,000,000 Particle Simulation Scaling](./media/particle_simulation_scaling.png)
 
-| Active Particle Count | Solver Time (XPBD) | Rendering Time (Vulkan) | Total Frame Latency | Measured Frame Rate | VRAM Memory Allocated |
-| --- | --- | --- | --- | --- | --- |
-| 100,000 Particles | 1.85 ms | 2.10 ms | 3.95 ms | 60.0 FPS | 12.8 MB |
-| 500,000 Particles | 8.40 ms | 7.90 ms | 16.30 ms | 60.0 FPS | 64.0 MB |
-| **1,000,000 Particles** | 41.20 ms | 42.10 ms | 83.30 ms | **12.0 FPS** | 128.0 MB |
+| Active Particle Count | Solver Time (XPBD) | Rendering Time (Vulkan) | Total Latency & FPS | VRAM Allocated |
+| --- | --- | --- | --- | --- |
+| **100,000 Particles** | 1.85 ms | 2.10 ms | **3.95 ms** (60 FPS) | 12.8 MB |
+| **500,000 Particles** | 8.40 ms | 7.90 ms | **16.30 ms** (60 FPS) | 64.0 MB |
+| **1,000,000 Particles** | 41.20 ms | 42.10 ms | **83.30 ms** (12 FPS) | 128.0 MB |
 
 ---
 
@@ -140,12 +148,12 @@ This drops execution to ~10 cycles while maintaining $10^{-6}$ precision.
 
 ## Grounded Competitive Moat Matrix
 
-| Technical Feature | Legacy 3D Engines (Unreal / Unity) | Legacy Vector Databases (Elasticsearch) | Titan Engine™ (FL Protocol™) |
+| Technical Feature | Legacy 3D Engines | Legacy Vector DBs | Titan Engine™ (FL Protocol™) |
 | --- | --- | --- | --- |
-| **Memory Hierarchy** | Object-Oriented (Unaligned Padding) | JVM Garbage Collected Arrays | **64-Byte Cache Line Deterministic Alignment** |
-| **Hardware Constraint** | High-End Workstation / Cloud GPUs | Massive Cloud RAM Footprints | **High Performance on Consumer Hardware** |
-| **Search Query Latency** | O(N log N) Traversal Hierarchies | Linear / Graph Search Stalls | **O(1) Flat Sub-Microsecond Search (150ns)** |
-| **VRAM Footprint Overhead** | Extreme Overhead per Mesh Object | Large Embedding Storage Overhead | **43.7% Verified Peak VRAM Reduction** |
+| **Memory Hierarchy** | Object-Oriented (Unaligned) | JVM Garbage Collected Arrays | **64-Byte Cache Line Alignment** |
+| **Hardware Constraint** | High-End Workstation / GPUs | Massive Cloud RAM Footprints | **High Performance on Consumer GPUs** |
+| **Search Query Latency** | O(N log N) Traversal | Linear / Graph Search Stalls | **O(1) Flat Sub-Microsecond Search (150ns)** |
+| **VRAM Overhead** | Extreme Per-Mesh Overhead | Large Embedding Storage | **43.7% Verified Peak VRAM Reduction** |
 
 ---
 
@@ -153,35 +161,28 @@ This drops execution to ~10 cycles while maintaining $10^{-6}$ precision.
 
 | Expansion Industry Vertical | Target Industry Technical Demand | FL Protocol™ Substrate Role | Target Technical Application |
 | --- | --- | --- | --- |
-| **1. Digital Twins & Smart Infrastructure** | Factory & Municipal Real-Time World Simulation | Distributed World State Spatial Indexing | Spatial Digital Twins & Municipal Engines |
-| **2. Robotics & Autonomous Kinematics** | Robot Sensor Kinematics & Spatial Mapping | Kinematic Sensor Memory & Map Layout | Autonomous System & Robotics Kinematics |
-| **3. Autonomous Vehicle Perception** | Real-Time Sensor Fusion & Object Indexing | Spatial Memory Fusion & Range Query Substrate | Autonomous Sensor Perception Engines |
-| **4. GIS & Geographic Spatial Systems** | Large-Scale Terrain & Spatial Databases | Multi-Layered GIS Spatial Memory Layout | Defense & Urban GIS Infrastructure |
-| **5. Medical Volumetric Data Analytics** | 3D CT / MRI Scan & Volume Rendering | Compact Volumetric Data Memory & Indexing | Medical Imaging & Volumetric Analytics |
-| **6. CAD / CAM & Semiconductor EDA** | 3D Geometry Processing & Mesh Storage | Circuit Database Storage & Primitive Lookup | Industrial Engineering & CAD Processing |
-| **7. Embedded Edge Computing** | Low-Power IoT & Autonomous Edge Compute | Compact Low-Footprint Substrate Architecture | Edge Appliance & IoT Embedded Compute |
-| **8. Cybersecurity Threat Intelligence** | High-Speed Log Stream & Threat Lookup | Zero-Lock Log Buffer Memory Indexing | Enterprise Log Stream Search Substrates |
+| **1. Digital Twins & Infrastructure** | Factory & Municipal World Simulation | Distributed World State Indexing | Spatial Digital Twins & Municipal Engines |
+| **2. Robotics & Kinematics** | Robot Sensor Kinematics & Mapping | Kinematic Sensor Memory & Mapping | Autonomous System & Robotics Kinematics |
+| **3. Autonomous Vehicles** | Real-Time Sensor Fusion & Indexing | Spatial Memory Fusion Substrate | Autonomous Sensor Perception Engines |
+| **4. GIS & Spatial Systems** | Large-Scale Terrain & Spatial Databases | Multi-Layered GIS Memory Layout | Defense & Urban GIS Infrastructure |
+| **5. Medical Volumetric Analytics** | 3D CT / MRI Volume Rendering | Compact Volumetric Memory Indexing | Medical Imaging & Volumetric Analytics |
+| **6. CAD / CAM & Semiconductor EDA** | 3D Geometry & Circuit Storage | Circuit Database & Primitive Lookup | Industrial Engineering & CAD Processing |
+| **7. Embedded Edge Computing** | Low-Power IoT & Edge Compute | Compact Low-Footprint Substrate | Edge Appliance & IoT Embedded Compute |
+| **8. Cybersecurity Intelligence** | High-Speed Log Stream Lookup | Zero-Lock Log Buffer Indexing | Enterprise Log Stream Search Substrates |
 
 ---
 
-## Core R&D Workstreams & Technical Risk Mitigation
+## Core R&D Workstreams
 
 | R&D Workstream | Technical Focus & Research Scope | Engineering Deliverables |
 | --- | --- | --- |
-| **1. Core Systems Optimization** | Deep performance profiling and tuning across rendering, memory allocation, physics, and Vulkan GPU compute pipelines. | Zero-overhead execution stability and cross-platform hardware optimization. |
+| **1. Core Systems Optimization** | Performance profiling across rendering, memory allocation, physics, and Vulkan GPU compute pipelines. | Zero-overhead execution stability and cross-platform hardware optimization. |
 | **2. Standalone C/Rust SDK** | Packaging standalone developer SDKs, public API gateways, developer documentation, and reference implementations. | Developer-ready C/Rust SDKs and comprehensive technical documentation. |
 | **3. Engine Analytics Suite** | Deep-level performance profiling, execution tracing, and real-time VRAM health analytics toolset. | Hardware performance profiling & diagnostic framework. |
-| **4. Advanced Physics Solvers** | Researching and engineering high-end physics solvers, ragdoll physics systems, and constraint simulation solvers. | Stable, high-fidelity rigid body, ragdoll, and kinematics physics suite. |
+| **4. Advanced Physics Solvers** | Researching and engineering high-end physics solvers, ragdoll systems, and constraint simulation solvers. | Stable, high-fidelity rigid body, ragdoll, and kinematics physics suite. |
 | **5. Global Illumination (GI)** | Maturing real-time Global Illumination algorithms and radiance cascade pipelines for complex lighting scenarios. | Production-ready real-time GI rendering pipeline. |
 | **6. Automated 3D Retopology** | R&D into automated 3D mesh retopology algorithms to streamline high-density 3D asset optimization and LOD generation. | Automated mesh retopology & geometry decimation subsystem. |
 | **7. FL Protocol™ Expansion** | Extending the 64-byte lock-free substrate into AI infrastructure, RAG vector indexing, enterprise databases, and cloud runtimes. | Multi-domain FL Protocol™ substrate bindings for AI & spatial workloads. |
-
-### Technical Risk Matrix
-| Risk Category | Identified Technical Challenge | Engineering Mitigation Strategy | Status |
-| --- | --- | --- | --- |
-| **Hardware Compatibility** | Vulkan driver divergence across GPU vendors | SPIR-V validation layer and dynamic fallback execution paths | **Mitigated** |
-| **Physics Stability** | High-density particle & constraint solver explosion | XPBD sub-stepping and deterministic float quantization | **Mitigated** |
-| **Cross-Platform SDK** | API surface instability during rapid feature addition | Strict semantic versioning & automated regression test suite | **Mitigated** |
 
 ---
 
