@@ -9,7 +9,7 @@
 
 ## Key Achievements & Empirical Milestones
 
-- **1,000,000+ Particle Dynamics**: Simulating 1 Million+ active physics particles at a stable 12+ FPS on standard consumer GPUs (AMD Ryzen 7 7435HS + RTX 4050 / Radeon 770M).
+- **1,000,000+ Particle Dynamics**: Simulating 1 Million+ active physics particles at a stable 12+ FPS on standard consumer GPUs (AMD Ryzen 7 7435HS + RTX 4060 / Radeon 770M).
 - **64-Byte Cache Line Alignment**: 100% deterministic L1/L2 cache line alignment with **0 Bytes** memory padding waste via the **FL Protocol™** substrate.
 - **Zero-Allocation Raycasting**: 100,000 concurrent ray queries dispatched with **0 Bytes heap allocation**, running at **0.18ms** refit latency.
 - **Sub-Microsecond Vector Indexing**: FL Protocol™ vector search maintaining **150ns** query latency on 1,000,000 documents with zero thread-blocking mutexes.
