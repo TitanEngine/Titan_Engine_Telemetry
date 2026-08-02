@@ -9,7 +9,7 @@
 
 ## Key Achievements & Empirical Milestones
 
-- **1,000,000+ Particle Dynamics**: Simulating 1 Million+ active physics particles at a stable 12+ FPS on standard consumer GPUs (AMD Ryzen 7 7435HS + RTX 4060 / Radeon 770M).
+- **1,000,000+ Particle Dynamics**: Simulating 1 Million+ active physics particles at a stable 12+ FPS on standard consumer GPUs (AMD Ryzen 7 7435HS + RTX 4050 / Radeon 770M).
 - **64-Byte Cache Line Alignment**: 100% deterministic L1/L2 cache line alignment with **0 Bytes** memory padding waste via the **FL Protocol™** substrate.
 - **Zero-Allocation Raycasting**: 100,000 concurrent ray queries dispatched with **0 Bytes heap allocation**, running at **0.18ms** refit latency.
 - **Sub-Microsecond Vector Indexing**: FL Protocol™ vector search maintaining **150ns** query latency on 1,000,000 documents with zero thread-blocking mutexes.
@@ -20,27 +20,7 @@
 
 ## Generative Hardware-Software Execution Stack
 
-<div align="center" style="margin: 15px 0;">
-<svg viewBox="0 0 760 220" style="width:100%; max-width:760px; height:auto; background:#0f172a; border-radius:6px; padding:10px;">
-  <rect x="15" y="15" width="730" height="190" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
-  <text x="35" y="42" fill="#38bdf8" font-family="monospace" font-size="12.5" font-weight="700">SYSTEM BOUNDARY / LOCAL HARDWARE RUNTIME</text>
-  <rect x="35" y="60" width="220" height="65" rx="4" fill="#0f172a" stroke="#0284c7" stroke-width="1.5"/>
-  <text x="48" y="83" fill="#e2e8f0" font-family="sans-serif" font-size="11" font-weight="700">1. Telemetry Ingestion</text>
-  <text x="48" y="101" fill="#94a3b8" font-family="sans-serif" font-size="9.5">Real-Time Voice Input & CLI</text>
-  <path d="M 255 92.5 L 295 92.5" stroke="#38bdf8" stroke-width="2" marker-end="url(#arr)"/>
-  <rect x="300" y="60" width="220" height="65" rx="4" fill="#0f172a" stroke="#0284c7" stroke-width="1.5"/>
-  <text x="313" y="83" fill="#e2e8f0" font-family="sans-serif" font-size="11" font-weight="700">2. Edge Inference Parser</text>
-  <text x="313" y="101" fill="#94a3b8" font-family="sans-serif" font-size="9.5">Local LLM & Math Transpilation</text>
-  <path d="M 410 125 L 410 145" stroke="#38bdf8" stroke-width="2"/>
-  <rect x="180" y="145" width="460" height="42" rx="4" fill="#0369a1" stroke="#38bdf8" stroke-width="1.5"/>
-  <text x="210" y="171" fill="#ffffff" font-family="sans-serif" font-size="12" font-weight="700">3. FL PROTOCOL™ LOCK-FREE MEMORY SUBSTRATE & TITAN ENGINE™ CORE</text>
-  <defs>
-    <marker id="arr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#38bdf8"/>
-    </marker>
-  </defs>
-</svg>
-</div>
+![Generative Hardware-Software Execution Stack](./media/generative_hardware_stack.png)
 
 ---
 
@@ -48,24 +28,7 @@
 
 ### 1. 64-Byte Hardware Cache Line Substrate Alignment Proof (`PhysicsVramArena`)
 
-<div align="center" style="margin: 15px 0;">
-<svg viewBox="0 0 460 160" style="width:100%; max-width:500px; height:auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; padding:10px;">
-  <line x1="60" y1="20" x2="440" y2="20" stroke="#e2e8f0" stroke-width="1"/>
-  <line x1="60" y1="65" x2="440" y2="65" stroke="#e2e8f0" stroke-width="1"/>
-  <line x1="60" y1="110" x2="440" y2="110" stroke="#cbd5e1" stroke-width="1.5"/>
-  <text x="50" y="24" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">24.0 GB</text>
-  <text x="50" y="69" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">12.0 GB</text>
-  <text x="50" y="114" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">0.0 GB</text>
-  <rect x="110" y="20" width="70" height="90" fill="#0f2346" rx="2"/>
-  <text x="145" y="14" font-size="9" font-weight="bold" fill="#0f2346" text-anchor="middle">24.0 GB</text>
-  <text x="145" y="130" font-size="8.5" font-weight="700" fill="#475569" text-anchor="middle">Industry Baseline</text>
-  <text x="145" y="144" font-size="7.5" fill="#64748b" text-anchor="middle">(Un-aligned Engine Allocation)</text>
-  <rect x="290" y="60" width="70" height="50" fill="#2c5eff" rx="2"/>
-  <text x="325" y="52" font-size="9" font-weight="bold" fill="#2c5eff" text-anchor="middle">13.5 GB</text>
-  <text x="325" y="130" font-size="8.5" font-weight="700" fill="#2c5eff" text-anchor="middle">Titan Engine (FL Protocol)</text>
-  <text x="325" y="144" font-size="7.5" fill="#2c5eff" text-anchor="middle">(64-Byte Hardware Aligned)</text>
-</svg>
-</div>
+![Peak VRAM Footprint Reduction](./media/vram_footprint_reduction.png)
 
 | Memory Sub-Region | Contiguous BDA Data Structure | Array Size (1M Particles) | 64-Byte Cache Lines | Alignment Padding Waste | L1/L2 Cache Line Efficiency |
 | --- | --- | --- | --- | --- | --- |
@@ -76,32 +39,7 @@
 
 ### 2. Pure FL Protocol™ Testing Achievements & Benchmark Performance Logs
 
-<div align="center" style="margin: 15px 0;">
-<svg viewBox="0 0 460 160" style="width:100%; max-width:500px; height:auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; padding:10px;">
-  <line x1="60" y1="20" x2="440" y2="20" stroke="#e2e8f0" stroke-width="1"/>
-  <line x1="60" y1="65" x2="440" y2="65" stroke="#e2e8f0" stroke-width="1"/>
-  <line x1="60" y1="110" x2="440" y2="110" stroke="#cbd5e1" stroke-width="1.5"/>
-  <text x="50" y="24" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">1,000 ns</text>
-  <text x="50" y="69" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">500 ns</text>
-  <text x="50" y="114" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">0 ns</text>
-  <path d="M90 95 Q200 60 410 24" fill="none" stroke="#0f2346" stroke-width="2" stroke-dasharray="4 4"/>
-  <text x="390" y="18" font-size="8" font-weight="bold" fill="#0f2346">Traditional Search O(N log N)</text>
-  <path d="M90 90 L195 96 L300 86 L410 82" fill="none" stroke="#2c5eff" stroke-width="3"/>
-  <circle cx="90" cy="90" r="3.5" fill="#2c5eff"/>
-  <circle cx="195" cy="96" r="3.5" fill="#2c5eff"/>
-  <circle cx="300" cy="86" r="3.5" fill="#2c5eff"/>
-  <circle cx="410" cy="82" r="3.5" fill="#2c5eff"/>
-  <text x="90" y="80" font-size="7.5" font-weight="bold" fill="#2c5eff" text-anchor="middle">220ns</text>
-  <text x="195" y="86" font-size="7.5" font-weight="bold" fill="#2c5eff" text-anchor="middle">150ns</text>
-  <text x="300" y="74" font-size="7.5" font-weight="bold" fill="#2c5eff" text-anchor="middle">260ns</text>
-  <text x="410" y="70" font-size="7.5" font-weight="bold" fill="#2c5eff" text-anchor="middle">310ns</text>
-  <text x="270" y="104" font-size="8.5" font-weight="bold" fill="#2c5eff">FL Protocol O(1) Flat Curve (150ns - 310ns)</text>
-  <text x="90" y="132" font-size="8" fill="#64748b" text-anchor="middle">100 Files</text>
-  <text x="195" y="132" font-size="8" fill="#64748b" text-anchor="middle">1,000 Files</text>
-  <text x="300" y="132" font-size="8" fill="#64748b" text-anchor="middle">5,000 Files</text>
-  <text x="410" y="132" font-size="8" fill="#64748b" text-anchor="middle">100,000 Files (Est.)</text>
-</svg>
-</div>
+![Pure FL Protocol O(1) Vector Search Latency Curve](./media/vector_search_latency_curve.png)
 
 #### A. Document Search & Scale Tier Benchmark Matrix
 | Dataset Scale (Files) | Substrate Index Nodes | Cold Rebuild (ms) | Warm Rebuild (ms) | Live Active RAM (MB) | Mean Query Latency | Lookup Complexity |
@@ -109,7 +47,7 @@
 | **100 Files** | 145 Nodes | **13.78 ms** | **18.28 ms** | 16.12 MB | **220 ns** (0.22 μs) | **O(1) Constant Time** |
 | **1,000 Files** | 1,045 Nodes | **95.22 ms** | **83.74 ms** | 129.40 MB | **150 ns** (0.15 μs) | **O(1) Constant Time** |
 | **5,000 Files** | 5,045 Nodes | **805.59 ms** | **1017.00 ms** | 1603.97 MB | **260 ns** (0.26 μs) | **O(1) Constant Time** |
-| **100,000 Files (Est.)** | 100,045 Nodes | **8250.00 ms** | **9100.00 ms** | 14500.00 MB | **310 ns** (0.31 μs) | **O(1) Constant Time** |
+| **100000 Files (Est.)** | 100,045 Nodes | **8250.00 ms** | **9100.00 ms** | 14500.00 MB | **310 ns** (0.31 μs) | **O(1) Constant Time** |
 
 #### B. Search Query Latency Percentile Distribution Logs
 | Scale Tier | Substrate Nodes | Mean Lookup | P50 Percentile | P90 Percentile | P95 Percentile | P99 Percentile | Mutex Lock Contention |
@@ -136,24 +74,7 @@
 
 ### 3. PCIe Streaming Latency & GPU Warp Occupancy Audit (ReBAR DMA)
 
-<div align="center" style="margin: 15px 0;">
-<svg viewBox="0 0 460 140" style="width:100%; max-width:500px; height:auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; padding:10px;">
-  <line x1="60" y1="15" x2="440" y2="15" stroke="#e2e8f0" stroke-width="1"/>
-  <line x1="60" y1="55" x2="440" y2="55" stroke="#e2e8f0" stroke-width="1"/>
-  <line x1="60" y1="95" x2="440" y2="95" stroke="#cbd5e1" stroke-width="1.5"/>
-  <text x="50" y="19" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">40,000 ns</text>
-  <text x="50" y="59" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">20,000 ns</text>
-  <text x="50" y="99" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">0 ns</text>
-  <rect x="110" y="25" width="70" height="70" fill="#0f2346" rx="2"/>
-  <text x="145" y="18" font-size="9" font-weight="bold" fill="#0f2346" text-anchor="middle">35,000 ns</text>
-  <text x="145" y="112" font-size="8.5" font-weight="700" fill="#475569" text-anchor="middle">Traditional Staging</text>
-  <text x="145" y="124" font-size="7.5" fill="#64748b" text-anchor="middle">(PCIe DMA Copy)</text>
-  <rect x="290" y="93" width="70" height="2" fill="#2c5eff" rx="1"/>
-  <text x="325" y="86" font-size="9" font-weight="bold" fill="#2c5eff" text-anchor="middle">100 ns</text>
-  <text x="325" y="112" font-size="8.5" font-weight="700" fill="#2c5eff" text-anchor="middle">Titan ReBAR Emitter</text>
-  <text x="325" y="124" font-size="7.5" fill="#2c5eff" text-anchor="middle">(64-Byte Write-Combine)</text>
-</svg>
-</div>
+![PCIe DMA ReBAR Throughput & Latency](./media/pcie_dma_rebar_throughput.png)
 
 | Metric Category | Observed Telemetry Metric | Benchmark Target Criteria | Compliance Status |
 | --- | --- | --- | --- |
@@ -164,32 +85,7 @@
 
 ### 4. Production Raycasting & Dynamic BVH Refitting Latency Audit
 
-<div align="center" style="margin: 15px 0;">
-<svg viewBox="0 0 460 160" style="width:100%; max-width:500px; height:auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; padding:10px;">
-  <line x1="60" y1="20" x2="440" y2="20" stroke="#e2e8f0" stroke-width="1"/>
-  <line x1="60" y1="65" x2="440" y2="65" stroke="#e2e8f0" stroke-width="1"/>
-  <line x1="60" y1="110" x2="440" y2="110" stroke="#cbd5e1" stroke-width="1.5"/>
-  <text x="50" y="24" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">3,000 ns</text>
-  <text x="50" y="69" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">1,500 ns</text>
-  <text x="50" y="114" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">0 ns</text>
-  <rect x="80" y="97" width="55" height="13" fill="#2c5eff" rx="2"/>
-  <text x="107" y="90" font-size="8.5" font-weight="bold" fill="#2c5eff" text-anchor="middle">420 ns</text>
-  <text x="107" y="130" font-size="8" font-weight="700" fill="#2c5eff" text-anchor="middle">Any-Hit Exit</text>
-  <text x="107" y="144" font-size="7" fill="#64748b" text-anchor="middle">(Shadow Query)</text>
-  <rect x="175" y="86" width="55" height="24" fill="#0f2346" rx="2"/>
-  <text x="202" y="78" font-size="8.5" font-weight="bold" fill="#0f2346" text-anchor="middle">800 ns</text>
-  <text x="202" y="130" font-size="8" font-weight="700" fill="#475569" text-anchor="middle">Coalesced Ray</text>
-  <text x="202" y="144" font-size="7" fill="#64748b" text-anchor="middle">(Spatial Hit)</text>
-  <rect x="270" y="34" width="55" height="76" fill="#475569" rx="2"/>
-  <text x="297" y="27" font-size="8.5" font-weight="bold" fill="#475569" text-anchor="middle">2,530 ns</text>
-  <text x="297" y="130" font-size="8" font-weight="700" fill="#475569" text-anchor="middle">Closest Hit</text>
-  <text x="297" y="144" font-size="7" fill="#64748b" text-anchor="middle">(Full Traversal)</text>
-  <rect x="365" y="20" width="55" height="90" fill="#64748b" rx="2"/>
-  <text x="392" y="14" font-size="8.5" font-weight="bold" fill="#64748b" text-anchor="middle">3,000 ns</text>
-  <text x="392" y="130" font-size="8" font-weight="700" fill="#64748b" text-anchor="middle">Uncoalesced</text>
-  <text x="392" y="144" font-size="7" fill="#64748b" text-anchor="middle">(Random Memory)</text>
-</svg>
-</div>
+![Raycasting Pipeline Latency](./media/raycasting_pipeline_latency.png)
 
 | Active Ray Queries | BVH Refitting Time | Ray Intersection Time | Total Pipeline Latency | Heap Allocation per Query | Frame Rate (FPS) |
 | --- | --- | --- | --- | --- | --- |
@@ -199,32 +95,7 @@
 
 ### 5. 1,000,000 Particle Simulation Scaling & Hardware GPU Split
 
-<div align="center" style="margin: 15px 0;">
-<svg viewBox="0 0 460 140" style="width:100%; max-width:500px; height:auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; padding:10px;">
-  <line x1="60" y1="15" x2="440" y2="15" stroke="#e2e8f0" stroke-width="1"/>
-  <line x1="60" y1="55" x2="440" y2="55" stroke="#e2e8f0" stroke-width="1"/>
-  <line x1="60" y1="95" x2="440" y2="95" stroke="#cbd5e1" stroke-width="1.5"/>
-  <text x="50" y="19" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">10.0 ms</text>
-  <text x="50" y="59" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">5.0 ms</text>
-  <text x="50" y="99" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">0.0 ms</text>
-  <rect x="130" y="56" width="60" height="39" fill="#0f2346" rx="1"/>
-  <text x="160" y="78" font-size="7.5" font-weight="bold" fill="#ffffff" text-anchor="middle">4.82ms</text>
-  <rect x="130" y="30" width="60" height="26" fill="#2c5eff" rx="1"/>
-  <text x="160" y="46" font-size="7.5" font-weight="bold" fill="#ffffff" text-anchor="middle">3.28ms</text>
-  <rect x="130" y="28" width="60" height="2" fill="#64748b" rx="1"/>
-  <text x="160" y="20" font-size="8.5" font-weight="bold" fill="#0f2346" text-anchor="middle">8.39 ms</text>
-  <text x="160" y="112" font-size="8" font-weight="700" fill="#475569" text-anchor="middle">Frame 300 Audit</text>
-  <text x="160" y="124" font-size="7" fill="#64748b" text-anchor="middle">(Steady State)</text>
-  <rect x="290" y="55" width="60" height="40" fill="#0f2346" rx="1"/>
-  <text x="320" y="77" font-size="7.5" font-weight="bold" fill="#ffffff" text-anchor="middle">5.02ms</text>
-  <rect x="290" y="29" width="60" height="26" fill="#2c5eff" rx="1"/>
-  <text x="320" y="45" font-size="7.5" font-weight="bold" fill="#ffffff" text-anchor="middle">3.30ms</text>
-  <rect x="290" y="26" width="60" height="3" fill="#64748b" rx="1"/>
-  <text x="320" y="18" font-size="8.5" font-weight="bold" fill="#0f2346" text-anchor="middle">8.60 ms</text>
-  <text x="320" y="112" font-size="8" font-weight="700" fill="#475569" text-anchor="middle">Frame 600 Audit</text>
-  <text x="320" y="124" font-size="7" fill="#64748b" text-anchor="middle">(Steady State)</text>
-</svg>
-</div>
+![1,000,000 Particle Simulation Scaling](./media/particle_simulation_scaling.png)
 
 | Active Particle Count | Solver Time (XPBD) | Rendering Time (Vulkan) | Total Frame Latency | Measured Frame Rate | VRAM Memory Allocated |
 | --- | --- | --- | --- | --- | --- |
@@ -317,4 +188,5 @@ This drops execution to ~10 cycles while maintaining $10^{-6}$ precision.
 ## Developed by SHAP Studio
 
 - **Developer / Founder**: Ameen Ullah Khan
+- **Studio Location**: Tonk, Rajasthan, India
 - **Technology Focus**: Bare-Metal 3D Physics Engines, Real-Time Vulkan Graphics, and Spatial Memory Substrates
