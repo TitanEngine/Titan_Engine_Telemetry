@@ -30,12 +30,47 @@
 
 ![Peak VRAM Footprint Reduction](./media/vram_footprint_reduction.png)
 
-| Memory Sub-Region | Data Structure | VRAM Size | Cache Lines | Waste & Efficiency |
-| --- | --- | --- | --- | --- |
-| **Predicted Positions** | `vec4[1M]` (16-Byte SIMD) | 16.0 MB | 262,144 | **0 Bytes Waste (100% Cache)** |
-| **Velocities & Rotations** | `vec4[1M]` (16-Byte SIMD) | 16.0 MB | 262,144 | **0 Bytes Waste (100% Cache)** |
-| **BVH Spatial AABB Tree** | `AabbNode[1M]` (32-Byte) | 32.0 MB | 524,288 | **0 Bytes Waste (100% Cache)** |
-| **Material & Thermodynamic** | `MatProperty[1M]` (64-Byte) | 64.0 MB | 1,048,576 | **0 Bytes Waste (100% Cache)** |
+<table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
+  <thead>
+    <tr style="background:#1e293b; color:#38bdf8; text-align:left;">
+      <th style="padding:8px; border:1px solid #334155;">Memory Sub-Region</th>
+      <th style="padding:8px; border:1px solid #334155;">Data Structure</th>
+      <th style="padding:8px; border:1px solid #334155;">VRAM Size</th>
+      <th style="padding:8px; border:1px solid #334155;">Cache Lines</th>
+      <th style="padding:8px; border:1px solid #334155;">Waste & Efficiency</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>Predicted Positions</strong></td>
+      <td style="padding:8px; border:1px solid #334155;"><code>vec4[1M]</code> (16-Byte SIMD)</td>
+      <td style="padding:8px; border:1px solid #334155;">16.0 MB</td>
+      <td style="padding:8px; border:1px solid #334155;">262,144</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>0 Bytes Waste (100% Cache)</strong></td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>Velocities & Rotations</strong></td>
+      <td style="padding:8px; border:1px solid #334155;"><code>vec4[1M]</code> (16-Byte SIMD)</td>
+      <td style="padding:8px; border:1px solid #334155;">16.0 MB</td>
+      <td style="padding:8px; border:1px solid #334155;">262,144</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>0 Bytes Waste (100% Cache)</strong></td>
+    </tr>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>BVH Spatial AABB Tree</strong></td>
+      <td style="padding:8px; border:1px solid #334155;"><code>AabbNode[1M]</code> (32-Byte)</td>
+      <td style="padding:8px; border:1px solid #334155;">32.0 MB</td>
+      <td style="padding:8px; border:1px solid #334155;">524,288</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>0 Bytes Waste (100% Cache)</strong></td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>Material & Thermodynamic</strong></td>
+      <td style="padding:8px; border:1px solid #334155;"><code>MatProperty[1M]</code> (64-Byte)</td>
+      <td style="padding:8px; border:1px solid #334155;">64.0 MB</td>
+      <td style="padding:8px; border:1px solid #334155;">1,048,576</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>0 Bytes Waste (100% Cache)</strong></td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
@@ -44,35 +79,159 @@
 ![Pure FL Protocol O(1) Vector Search Latency Curve](./media/vector_search_latency_curve.png)
 
 #### A. Document Search & Scale Tier Benchmark
-| Dataset Scale | Substrate Nodes | Rebuild (Cold / Warm) | Active RAM | Query Latency & Complexity |
-| --- | --- | --- | --- | --- |
-| **100 Files** | 145 Nodes | 13.78 ms / 18.28 ms | 16.12 MB | **220 ns** (O(1) Constant) |
-| **1,000 Files** | 1,045 Nodes | 95.22 ms / 83.74 ms | 129.40 MB | **150 ns** (O(1) Constant) |
-| **5,000 Files** | 5,045 Nodes | 805.59 ms / 1,017.0 ms | 1,603.97 MB | **260 ns** (O(1) Constant) |
-| **100,000 Files (Est.)** | 100,045 Nodes | 8.25 s / 9.10 s | 14,500.0 MB | **310 ns** (O(1) Constant) |
+<table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
+  <thead>
+    <tr style="background:#1e293b; color:#38bdf8; text-align:left;">
+      <th style="padding:8px; border:1px solid #334155;">Dataset Scale</th>
+      <th style="padding:8px; border:1px solid #334155;">Substrate Nodes</th>
+      <th style="padding:8px; border:1px solid #334155;">Rebuild (Cold / Warm)</th>
+      <th style="padding:8px; border:1px solid #334155;">Active RAM</th>
+      <th style="padding:8px; border:1px solid #334155;">Query Latency & Complexity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>100 Files</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">145 Nodes</td>
+      <td style="padding:8px; border:1px solid #334155;">13.78 ms / 18.28 ms</td>
+      <td style="padding:8px; border:1px solid #334155;">16.12 MB</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>220 ns</strong> (O(1) Constant)</td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>1,000 Files</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">1,045 Nodes</td>
+      <td style="padding:8px; border:1px solid #334155;">95.22 ms / 83.74 ms</td>
+      <td style="padding:8px; border:1px solid #334155;">129.40 MB</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>150 ns</strong> (O(1) Constant)</td>
+    </tr>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>5,000 Files</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">5,045 Nodes</td>
+      <td style="padding:8px; border:1px solid #334155;">805.59 ms / 1,017.0 ms</td>
+      <td style="padding:8px; border:1px solid #334155;">1,603.97 MB</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>260 ns</strong> (O(1) Constant)</td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>100,000 Files (Est.)</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">100,045 Nodes</td>
+      <td style="padding:8px; border:1px solid #334155;">8.25 s / 9.10 s</td>
+      <td style="padding:8px; border:1px solid #334155;">14,500.0 MB</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>310 ns</strong> (O(1) Constant)</td>
+    </tr>
+  </tbody>
+</table>
 
 #### B. Search Latency Percentile Distribution
-| Scale Tier | Mean Lookup | P50 / P90 Latency | P95 / P99 Latency | Lock Contention |
-| --- | --- | --- | --- | --- |
-| **100 Files** | **220 ns** | 210 ns / 230 ns | 240 ns / 260 ns | **0.00 ns** |
-| **1,000 Files** | **150 ns** | 140 ns / 160 ns | 170 ns / 180 ns | **0.00 ns** |
-| **5,000 Files** | **260 ns** | 250 ns / 270 ns | 280 ns / 300 ns | **0.00 ns** |
+<table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
+  <thead>
+    <tr style="background:#1e293b; color:#38bdf8; text-align:left;">
+      <th style="padding:8px; border:1px solid #334155;">Scale Tier</th>
+      <th style="padding:8px; border:1px solid #334155;">Mean Lookup</th>
+      <th style="padding:8px; border:1px solid #334155;">P50 / P90 Latency</th>
+      <th style="padding:8px; border:1px solid #334155;">P95 / P99 Latency</th>
+      <th style="padding:8px; border:1px solid #334155;">Lock Contention</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>100 Files</strong></td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>220 ns</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">210 ns / 230 ns</td>
+      <td style="padding:8px; border:1px solid #334155;">240 ns / 260 ns</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>0.00 ns</strong></td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>1,000 Files</strong></td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>150 ns</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">140 ns / 160 ns</td>
+      <td style="padding:8px; border:1px solid #334155;">170 ns / 180 ns</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>0.00 ns</strong></td>
+    </tr>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>5,000 Files</strong></td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>260 ns</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">250 ns / 270 ns</td>
+      <td style="padding:8px; border:1px solid #334155;">280 ns / 300 ns</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>0.00 ns</strong></td>
+    </tr>
+  </tbody>
+</table>
 
 #### C. Real-World Codebase Ingestion Telemetry
-| Benchmark Parameter | Tested Metric | Measured Throughput / Duration | Operational Impact |
-| --- | --- | --- | --- |
-| **Codebase Ingestion** | 84 Files (1.72 MB Text) | **278,347 Tokens** | Software project ingestion |
-| **Cold Index Build** | AST Construction | **651.00 ms** | Zero-lock parallel parsing |
-| **Tokenizer Throughput** | Char State Machine | **3,412,850 Tokens / Sec** | 3.4M tokens/sec speed |
-| **Interner Throughput** | Monotonic Symbols | **9,420,110 Symbols / Sec** | 9.4M symbols/sec interning |
-| **10,000 Prefix Search** | 392,500 Symbols | **4.19 μs Mean Latency** | Bulk symbol retrieval |
+<table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
+  <thead>
+    <tr style="background:#1e293b; color:#38bdf8; text-align:left;">
+      <th style="padding:8px; border:1px solid #334155;">Benchmark Parameter</th>
+      <th style="padding:8px; border:1px solid #334155;">Tested Metric</th>
+      <th style="padding:8px; border:1px solid #334155;">Measured Throughput / Duration</th>
+      <th style="padding:8px; border:1px solid #334155;">Operational Impact</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>Codebase Ingestion</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">84 Files (1.72 MB Text)</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>278,347 Tokens</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">Software project ingestion</td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>Cold Index Build</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">AST Construction</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>651.00 ms</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">Zero-lock parallel parsing</td>
+    </tr>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>Tokenizer Throughput</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">Char State Machine</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>3,412,850 Tokens / Sec</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">3.4M tokens/sec speed</td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>Interner Throughput</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">Monotonic Symbols</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>9,420,110 Symbols / Sec</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">9.4M symbols/sec interning</td>
+    </tr>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>10,000 Prefix Search</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">392,500 Symbols</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>4.19 μs Mean Latency</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">Bulk symbol retrieval</td>
+    </tr>
+  </tbody>
+</table>
 
 #### D. Substrate Slot Operations & Lock-Free Mutability
-| Operation Type | Execution Latency (μs / ns) | Re-indexing Cost | Complexity Verification |
-| --- | --- | --- | --- |
-| **Block Offset Append** | **0.0029 μs** (2.9 ns) | **0.00 ms** | **O(1) Bare-Metal PASS** |
-| **Block In-Place Edit** | **< 0.0001 μs** (< 1.0 ns) | **0.00 ms** | **O(1) Bare-Metal PASS** |
-| **Block Unbind Delete** | **< 0.0001 μs** (< 1.0 ns) | **0.00 ms** | **O(1) Bare-Metal PASS** |
+<table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
+  <thead>
+    <tr style="background:#1e293b; color:#38bdf8; text-align:left;">
+      <th style="padding:8px; border:1px solid #334155;">Operation Type</th>
+      <th style="padding:8px; border:1px solid #334155;">Execution Latency (μs / ns)</th>
+      <th style="padding:8px; border:1px solid #334155;">Re-indexing Cost</th>
+      <th style="padding:8px; border:1px solid #334155;">Complexity Verification</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>Block Offset Append</strong></td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>0.0029 μs</strong> (2.9 ns)</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>0.00 ms</strong></td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>O(1) Bare-Metal PASS</strong></td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>Block In-Place Edit</strong></td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>&lt; 0.0001 μs</strong> (&lt; 1.0 ns)</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>0.00 ms</strong></td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>O(1) Bare-Metal PASS</strong></td>
+    </tr>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>Block Unbind Delete</strong></td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>&lt; 0.0001 μs</strong> (&lt; 1.0 ns)</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>0.00 ms</strong></td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>O(1) Bare-Metal PASS</strong></td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
@@ -80,12 +239,42 @@
 
 ![PCIe DMA ReBAR Throughput & Latency](./media/pcie_dma_rebar_throughput.png)
 
-| Metric Category | Observed Telemetry | Benchmark Target | Compliance Status |
-| --- | --- | --- | --- |
-| **ReBAR DMA Throughput** | **12.4 GB/s** | > 10.0 GB/s | **PASS** |
-| **PCIe Transfer Spike** | **140 ns** | < 1,000 ns | **PASS** |
-| **GPU Warp Occupancy** | **98.2%** | > 90.0% | **PASS** |
-| **CPU Staging Buffer** | **0 Bytes** | 0 Bytes | **PASS** |
+<table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
+  <thead>
+    <tr style="background:#1e293b; color:#38bdf8; text-align:left;">
+      <th style="padding:8px; border:1px solid #334155;">Metric Category</th>
+      <th style="padding:8px; border:1px solid #334155;">Observed Telemetry</th>
+      <th style="padding:8px; border:1px solid #334155;">Benchmark Target</th>
+      <th style="padding:8px; border:1px solid #334155;">Compliance Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>ReBAR DMA Throughput</strong></td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>12.4 GB/s</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">&gt; 10.0 GB/s</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>PASS</strong></td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>PCIe Transfer Spike</strong></td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>140 ns</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">&lt; 1,000 ns</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>PASS</strong></td>
+    </tr>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>GPU Warp Occupancy</strong></td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>98.2%</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">&gt; 90.0%</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>PASS</strong></td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>CPU Staging Buffer</strong></td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>0 Bytes</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">0 Bytes</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>PASS</strong></td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
@@ -93,11 +282,40 @@
 
 ![Raycasting Pipeline Latency](./media/raycasting_pipeline_latency.png)
 
-| Active Ray Queries | BVH Refit Time | Intersection Time | Pipeline Latency & FPS | Heap Allocation |
-| --- | --- | --- | --- | --- |
-| **10,000 Rays** | 0.04 ms | 0.12 ms | **0.16 ms** (60 FPS) | **0 Bytes** |
-| **50,000 Rays** | 0.11 ms | 0.48 ms | **0.59 ms** (60 FPS) | **0 Bytes** |
-| **100,000 Rays** | 0.18 ms | 0.94 ms | **1.12 ms** (60 FPS) | **0 Bytes** |
+<table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
+  <thead>
+    <tr style="background:#1e293b; color:#38bdf8; text-align:left;">
+      <th style="padding:8px; border:1px solid #334155;">Active Ray Queries</th>
+      <th style="padding:8px; border:1px solid #334155;">BVH Refit Time</th>
+      <th style="padding:8px; border:1px solid #334155;">Intersection Time</th>
+      <th style="padding:8px; border:1px solid #334155;">Pipeline Latency & FPS</th>
+      <th style="padding:8px; border:1px solid #334155;">Heap Allocation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>10,000 Rays</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">0.04 ms</td>
+      <td style="padding:8px; border:1px solid #334155;">0.12 ms</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>0.16 ms</strong> (60 FPS)</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>0 Bytes</strong></td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>50,000 Rays</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">0.11 ms</td>
+      <td style="padding:8px; border:1px solid #334155;">0.48 ms</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>0.59 ms</strong> (60 FPS)</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>0 Bytes</strong></td>
+    </tr>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>100,000 Rays</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">0.18 ms</td>
+      <td style="padding:8px; border:1px solid #334155;">0.94 ms</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>1.12 ms</strong> (60 FPS)</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>0 Bytes</strong></td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
@@ -105,11 +323,40 @@
 
 ![1,000,000 Particle Simulation Scaling](./media/particle_simulation_scaling.png)
 
-| Active Particle Count | Solver Time (XPBD) | Rendering Time (Vulkan) | Total Latency & FPS | VRAM Allocated |
-| --- | --- | --- | --- | --- |
-| **100,000 Particles** | 1.85 ms | 2.10 ms | **3.95 ms** (60 FPS) | 12.8 MB |
-| **500,000 Particles** | 8.40 ms | 7.90 ms | **16.30 ms** (60 FPS) | 64.0 MB |
-| **1,000,000 Particles** | 41.20 ms | 42.10 ms | **83.30 ms** (12 FPS) | 128.0 MB |
+<table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
+  <thead>
+    <tr style="background:#1e293b; color:#38bdf8; text-align:left;">
+      <th style="padding:8px; border:1px solid #334155;">Active Particle Count</th>
+      <th style="padding:8px; border:1px solid #334155;">Solver Time (XPBD)</th>
+      <th style="padding:8px; border:1px solid #334155;">Rendering Time (Vulkan)</th>
+      <th style="padding:8px; border:1px solid #334155;">Total Latency & FPS</th>
+      <th style="padding:8px; border:1px solid #334155;">VRAM Allocated</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>100,000 Particles</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">1.85 ms</td>
+      <td style="padding:8px; border:1px solid #334155;">2.10 ms</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>3.95 ms</strong> (60 FPS)</td>
+      <td style="padding:8px; border:1px solid #334155;">12.8 MB</td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>500,000 Particles</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">8.40 ms</td>
+      <td style="padding:8px; border:1px solid #334155;">7.90 ms</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>16.30 ms</strong> (60 FPS)</td>
+      <td style="padding:8px; border:1px solid #334155;">64.0 MB</td>
+    </tr>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>1,000,000 Particles</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">41.20 ms</td>
+      <td style="padding:8px; border:1px solid #334155;">42.10 ms</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>83.30 ms</strong> (12 FPS)</td>
+      <td style="padding:8px; border:1px solid #334155;">128.0 MB</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
@@ -148,41 +395,158 @@ This drops execution to ~10 cycles while maintaining $10^{-6}$ precision.
 
 ## Grounded Competitive Moat Matrix
 
-| Technical Feature | Legacy 3D Engines | Legacy Vector DBs | Titan Engine™ (FL Protocol™) |
-| --- | --- | --- | --- |
-| **Memory Hierarchy** | Object-Oriented (Unaligned) | JVM Garbage Collected Arrays | **64-Byte Cache Line Alignment** |
-| **Hardware Constraint** | High-End Workstation / GPUs | Massive Cloud RAM Footprints | **High Performance on Consumer GPUs** |
-| **Search Query Latency** | O(N log N) Traversal | Linear / Graph Search Stalls | **O(1) Flat Sub-Microsecond Search (150ns)** |
-| **VRAM Overhead** | Extreme Per-Mesh Overhead | Large Embedding Storage | **43.7% Verified Peak VRAM Reduction** |
+<table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
+  <thead>
+    <tr style="background:#1e293b; color:#38bdf8; text-align:left;">
+      <th style="padding:8px; border:1px solid #334155;">Technical Feature</th>
+      <th style="padding:8px; border:1px solid #334155;">Legacy 3D Engines</th>
+      <th style="padding:8px; border:1px solid #334155;">Legacy Vector DBs</th>
+      <th style="padding:8px; border:1px solid #334155;">Titan Engine™ (FL Protocol™)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>Memory Hierarchy</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">Object-Oriented (Unaligned)</td>
+      <td style="padding:8px; border:1px solid #334155;">JVM Garbage Collected Arrays</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>64-Byte Cache Line Alignment</strong></td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>Hardware Constraint</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">High-End Workstation / GPUs</td>
+      <td style="padding:8px; border:1px solid #334155;">Massive Cloud RAM Footprints</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>High Performance on Consumer GPUs</strong></td>
+    </tr>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>Search Query Latency</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">O(N log N) Traversal</td>
+      <td style="padding:8px; border:1px solid #334155;">Linear / Graph Search Stalls</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>O(1) Flat Sub-Microsecond Search (150ns)</strong></td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>VRAM Overhead</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">Extreme Per-Mesh Overhead</td>
+      <td style="padding:8px; border:1px solid #334155;">Large Embedding Storage</td>
+      <td style="padding:8px; border:1px solid #334155;"><strong>43.7% Verified Peak VRAM Reduction</strong></td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
 ## Strategic Industry Expansion Verticals
 
-| Expansion Industry Vertical | Target Industry Technical Demand | FL Protocol™ Substrate Role | Target Technical Application |
-| --- | --- | --- | --- |
-| **1. Digital Twins & Infrastructure** | Factory & Municipal World Simulation | Distributed World State Indexing | Spatial Digital Twins & Municipal Engines |
-| **2. Robotics & Kinematics** | Robot Sensor Kinematics & Mapping | Kinematic Sensor Memory & Mapping | Autonomous System & Robotics Kinematics |
-| **3. Autonomous Vehicles** | Real-Time Sensor Fusion & Indexing | Spatial Memory Fusion Substrate | Autonomous Sensor Perception Engines |
-| **4. GIS & Spatial Systems** | Large-Scale Terrain & Spatial Databases | Multi-Layered GIS Memory Layout | Defense & Urban GIS Infrastructure |
-| **5. Medical Volumetric Analytics** | 3D CT / MRI Volume Rendering | Compact Volumetric Memory Indexing | Medical Imaging & Volumetric Analytics |
-| **6. CAD / CAM & Semiconductor EDA** | 3D Geometry & Circuit Storage | Circuit Database & Primitive Lookup | Industrial Engineering & CAD Processing |
-| **7. Embedded Edge Computing** | Low-Power IoT & Edge Compute | Compact Low-Footprint Substrate | Edge Appliance & IoT Embedded Compute |
-| **8. Cybersecurity Intelligence** | High-Speed Log Stream Lookup | Zero-Lock Log Buffer Indexing | Enterprise Log Stream Search Substrates |
+<table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
+  <thead>
+    <tr style="background:#1e293b; color:#38bdf8; text-align:left;">
+      <th style="padding:8px; border:1px solid #334155;">Expansion Vertical</th>
+      <th style="padding:8px; border:1px solid #334155;">Target Industry Technical Demand</th>
+      <th style="padding:8px; border:1px solid #334155;">FL Protocol™ Substrate Role</th>
+      <th style="padding:8px; border:1px solid #334155;">Target Technical Application</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>1. Digital Twins & Infrastructure</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">Factory & Municipal World Simulation</td>
+      <td style="padding:8px; border:1px solid #334155;">Distributed World State Indexing</td>
+      <td style="padding:8px; border:1px solid #334155;">Spatial Digital Twins & Municipal Engines</td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>2. Robotics & Kinematics</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">Robot Sensor Kinematics & Mapping</td>
+      <td style="padding:8px; border:1px solid #334155;">Kinematic Sensor Memory & Mapping</td>
+      <td style="padding:8px; border:1px solid #334155;">Autonomous System & Robotics Kinematics</td>
+    </tr>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>3. Autonomous Vehicles</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">Real-Time Sensor Fusion & Indexing</td>
+      <td style="padding:8px; border:1px solid #334155;">Spatial Memory Fusion Substrate</td>
+      <td style="padding:8px; border:1px solid #334155;">Autonomous Sensor Perception Engines</td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>4. GIS & Spatial Systems</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">Large-Scale Terrain & Spatial Databases</td>
+      <td style="padding:8px; border:1px solid #334155;">Multi-Layered GIS Memory Layout</td>
+      <td style="padding:8px; border:1px solid #334155;">Defense & Urban GIS Infrastructure</td>
+    </tr>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>5. Medical Volumetric Analytics</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">3D CT / MRI Volume Rendering</td>
+      <td style="padding:8px; border:1px solid #334155;">Compact Volumetric Memory Indexing</td>
+      <td style="padding:8px; border:1px solid #334155;">Medical Imaging & Volumetric Analytics</td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>6. CAD / CAM & EDA</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">3D Geometry & Circuit Storage</td>
+      <td style="padding:8px; border:1px solid #334155;">Circuit Database & Primitive Lookup</td>
+      <td style="padding:8px; border:1px solid #334155;">Industrial Engineering & CAD Processing</td>
+    </tr>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>7. Embedded Edge Computing</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">Low-Power IoT & Edge Compute</td>
+      <td style="padding:8px; border:1px solid #334155;">Compact Low-Footprint Substrate</td>
+      <td style="padding:8px; border:1px solid #334155;">Edge Appliance & IoT Embedded Compute</td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>8. Cybersecurity Intelligence</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">High-Speed Log Stream Lookup</td>
+      <td style="padding:8px; border:1px solid #334155;">Zero-Lock Log Buffer Indexing</td>
+      <td style="padding:8px; border:1px solid #334155;">Enterprise Log Stream Search Substrates</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
 ## Core R&D Workstreams
 
-| R&D Workstream | Technical Focus & Research Scope | Engineering Deliverables |
-| --- | --- | --- |
-| **1. Core Systems Optimization** | Performance profiling across rendering, memory allocation, physics, and Vulkan GPU compute pipelines. | Zero-overhead execution stability and cross-platform hardware optimization. |
-| **2. Standalone C/Rust SDK** | Packaging standalone developer SDKs, public API gateways, developer documentation, and reference implementations. | Developer-ready C/Rust SDKs and comprehensive technical documentation. |
-| **3. Engine Analytics Suite** | Deep-level performance profiling, execution tracing, and real-time VRAM health analytics toolset. | Hardware performance profiling & diagnostic framework. |
-| **4. Advanced Physics Solvers** | Researching and engineering high-end physics solvers, ragdoll systems, and constraint simulation solvers. | Stable, high-fidelity rigid body, ragdoll, and kinematics physics suite. |
-| **5. Global Illumination (GI)** | Maturing real-time Global Illumination algorithms and radiance cascade pipelines for complex lighting scenarios. | Production-ready real-time GI rendering pipeline. |
-| **6. Automated 3D Retopology** | R&D into automated 3D mesh retopology algorithms to streamline high-density 3D asset optimization and LOD generation. | Automated mesh retopology & geometry decimation subsystem. |
-| **7. FL Protocol™ Expansion** | Extending the 64-byte lock-free substrate into AI infrastructure, RAG vector indexing, enterprise databases, and cloud runtimes. | Multi-domain FL Protocol™ substrate bindings for AI & spatial workloads. |
+<table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
+  <thead>
+    <tr style="background:#1e293b; color:#38bdf8; text-align:left;">
+      <th style="padding:8px; border:1px solid #334155;">R&D Workstream</th>
+      <th style="padding:8px; border:1px solid #334155;">Technical Focus & Research Scope</th>
+      <th style="padding:8px; border:1px solid #334155;">Engineering Deliverables</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>1. Core Systems Optimization</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">Performance profiling across rendering, memory allocation, physics, and Vulkan compute.</td>
+      <td style="padding:8px; border:1px solid #334155;">Zero-overhead execution stability & cross-platform optimization.</td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>2. Standalone C/Rust SDK</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">Packaging developer SDKs, API gateways, documentation, and reference code.</td>
+      <td style="padding:8px; border:1px solid #334155;">Developer-ready C/Rust SDKs and complete documentation.</td>
+    </tr>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>3. Engine Analytics Suite</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">Deep performance profiling, execution tracing, and real-time VRAM health analytics.</td>
+      <td style="padding:8px; border:1px solid #334155;">Hardware performance profiling & diagnostic framework.</td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>4. Advanced Physics Solvers</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">Researching physics solvers, ragdoll systems, and constraint simulation solvers.</td>
+      <td style="padding:8px; border:1px solid #334155;">Stable, high-fidelity rigid body & kinematics physics suite.</td>
+    </tr>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>5. Global Illumination (GI)</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">Maturing real-time Global Illumination and radiance cascade pipelines.</td>
+      <td style="padding:8px; border:1px solid #334155;">Production-ready real-time GI rendering pipeline.</td>
+    </tr>
+    <tr style="border:1px solid #334155; background:#0f172a;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>6. Automated 3D Retopology</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">R&D into 3D mesh retopology algorithms to streamline asset optimization and LODs.</td>
+      <td style="padding:8px; border:1px solid #334155;">Automated mesh retopology & geometry decimation subsystem.</td>
+    </tr>
+    <tr style="border:1px solid #334155;">
+      <td style="padding:8px; border:1px solid #334155;"><strong>7. FL Protocol™ Expansion</strong></td>
+      <td style="padding:8px; border:1px solid #334155;">Extending substrate into AI infrastructure, RAG vector indexing, and databases.</td>
+      <td style="padding:8px; border:1px solid #334155;">Multi-domain FL Protocol™ substrate bindings for AI workloads.</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
