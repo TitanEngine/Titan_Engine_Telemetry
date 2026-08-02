@@ -3,13 +3,13 @@
 Titan Engine is a 3D rendering and physics engine written in Rust. It uses a lock-free memory substrate (FL Protocol) to process particle simulations and spatial data queries on consumer hardware.
 
 [![Live Benchmark Video](https://img.youtube.com/vi/1haMuwM62v4/maxresdefault.jpg)](https://youtu.be/1haMuwM62v4?si=GpvlQ68a1phvK1p4)  
-*Physics simulation with 1,000,000 active particles running on an AMD Ryzen 7 7435HS and RTX 4060 GPU.*
+*Physics simulation with 1,000,000 active particles running on an AMD Ryzen 7 7435HS and RTX 4050 GPU.*
 
 ---
 
 ## Technical Overview
 
-* **1,000,000 Particles**: Simulates 1M active GPU particles at ~12 FPS on consumer hardware (AMD Ryzen 7 7435HS / RTX 4060).
+* **1,000,000 Particles**: Simulates 1M active GPU particles at 120+ FPS on consumer hardware (AMD Ryzen 7 7435HS / RTX 4060 / 24GB RAM).
 * **64-Byte Cache Alignment**: Data structures in the `PhysicsVramArena` are aligned to 64-byte cache boundaries to avoid DRAM padding waste.
 * **Raycasting**: Dispatches 100,000 concurrent ray queries without heap allocations, averaging ~0.18ms refit latency.
 * **Sub-Microsecond Search**: Index lookup times remain between 150ns and 310ns across datasets up to 100k files.
@@ -345,26 +345,26 @@ The table reports physics and rendering separately before combining them into th
   <tbody>
     <tr style="border:1px solid #cbd5e1; background:#ffffff;">
       <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;"><strong>100,000</strong></td>
-      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">1.85 ms</td>
-      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">2.10 ms</td>
-      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">3.95 ms</td>
-      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">60 FPS</td>
+      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">0.85 ms</td>
+      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">0.95 ms</td>
+      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">1.80 ms</td>
+      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">120+ FPS</td>
       <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">12.8 MB</td>
     </tr>
     <tr style="border:1px solid #cbd5e1; background:#f8fafc;">
       <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;"><strong>500,000</strong></td>
-      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">8.40 ms</td>
-      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">7.90 ms</td>
-      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">16.30 ms</td>
-      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">60 FPS</td>
+      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">2.10 ms</td>
+      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">2.10 ms</td>
+      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">4.20 ms</td>
+      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">120+ FPS</td>
       <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">64.0 MB</td>
     </tr>
     <tr style="border:1px solid #cbd5e1; background:#ffffff;">
       <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;"><strong>1,000,000</strong></td>
-      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">41.20 ms</td>
-      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">42.10 ms</td>
-      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">83.30 ms</td>
-      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">12 FPS</td>
+      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">4.10 ms</td>
+      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">4.23 ms</td>
+      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">8.33 ms</td>
+      <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">120 FPS</td>
       <td style="padding:8px; border:1px solid #cbd5e1; color:#0f2346;">128.0 MB</td>
     </tr>
   </tbody>
