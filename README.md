@@ -3,13 +3,13 @@
 Titan Engine is a 3D rendering and physics engine written in Rust. It uses a lock-free memory substrate (FL Protocol) to process particle simulations and spatial data queries on consumer hardware.
 
 [![Live Benchmark Video](https://img.youtube.com/vi/1haMuwM62v4/maxresdefault.jpg)](https://youtu.be/1haMuwM62v4?si=GpvlQ68a1phvK1p4)  
-*Physics simulation with 1,000,000 active particles running on an AMD Ryzen 7 7435HS and RTX 4060 GPU.*
+*Physics simulation with 1,000,000 active particles running on an AMD Ryzen 7 7435HS and RTX 4050 GPU.*
 
 ---
 
 ## Technical Overview
 
-* **1,000,000 Particles**: Simulates 1M active GPU particles at ~12 FPS on consumer hardware (AMD Ryzen 7 7435HS / RTX 4060).
+* **1,000,000 Particles**: Simulates 1M active GPU particles at ~12 FPS on consumer hardware (AMD Ryzen 7 7435HS / RTX 4050).
 * **64-Byte Cache Alignment**: Data structures in the `PhysicsVramArena` are aligned to 64-byte cache boundaries to avoid DRAM padding waste.
 * **Raycasting**: Dispatches 100,000 concurrent ray queries without heap allocations, averaging ~0.18ms refit latency.
 * **Sub-Microsecond Search**: Index lookup times remain between 150ns and 310ns across datasets up to 100k files.
@@ -21,17 +21,19 @@ Titan Engine is a 3D rendering and physics engine written in Rust. It uses a loc
 
 ![Hardware-Software Execution Stack](./media/generative_hardware_stack.png)
 
-The engine accepts telemetry input from CLI or local LLM voice parsers, translates commands through the FL Protocol bridge, and dispatches compute work to the Vulkan renderer and XPBD physics pipeline.
+Commands from the CLI or local voice parser enter the FL Protocol bridge. The bridge prepares GPU workloads, which are then submitted to the Vulkan renderer and XPBD solver.
 
 ---
 
 ## Performance Measurements
 
-All tests were recorded on a testbed equipped with an AMD Ryzen 7 7435HS CPU (8 cores, 16 threads), 24GB DDR5 RAM, and an NVIDIA RTX 4060 Mobile GPU running Vulkan 1.3 on Windows 11.
+All tests were recorded on a testbed equipped with an AMD Ryzen 7 7435HS CPU (8 cores, 16 threads), 16GB DDR5 RAM, and an NVIDIA RTX 4050 Mobile GPU running Vulkan 1.3 on Windows 11.
 
 ### 1. Memory Buffer Alignment (`PhysicsVramArena`)
 
 ![Peak VRAM Footprint Reduction](./media/vram_footprint_reduction.png)
+
+This table describes the memory layout used by the engine. It is intended to show how the major GPU buffers are organized in memory rather than measure execution performance.
 
 <table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
   <thead>
@@ -82,6 +84,8 @@ All tests were recorded on a testbed equipped with an AMD Ryzen 7 7435HS CPU (8 
 ![Vector Search Latency Curve](./media/vector_search_latency_curve.png)
 
 #### Query Benchmarks Across Scale Tiers
+
+The data distinguishes index setup time from active query retrieval. Cold builds include full symbol parsing and tree allocation, while warm builds reflect index updates over existing memory mappings. Notably, while setup time scales with file count, individual query retrieval latency remains flat due to direct slot indexing.
 
 <table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
   <thead>
@@ -173,6 +177,8 @@ All tests were recorded on a testbed equipped with an AMD Ryzen 7 7435HS CPU (8 
 
 #### Parsing & Tokenization Speed
 
+These measurements cover distinct pipeline stages (FSM tokenizer vs. string interner vs. AST construction) rather than a single execution pass.
+
 <table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
   <thead>
     <tr style="background:#0f2346; color:#ffffff; text-align:left;">
@@ -240,6 +246,8 @@ All tests were recorded on a testbed equipped with an AMD Ryzen 7 7435HS CPU (8 
 
 ![PCIe DMA ReBAR Throughput & Latency](./media/pcie_dma_rebar_throughput.png)
 
+These metrics capture host-to-device streaming performance over Resizable BAR (ReBAR) memory regions, tracking transfer latency spikes and GPU warp utilization during continuous data ingestion.
+
 <table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
   <thead>
     <tr style="background:#0f2346; color:#ffffff; text-align:left;">
@@ -277,6 +285,8 @@ All tests were recorded on a testbed equipped with an AMD Ryzen 7 7435HS CPU (8 
 ### 4. Vulkan Raycasting Performance
 
 ![Raycasting Pipeline Latency](./media/raycasting_pipeline_latency.png)
+
+BVH refitting remains relatively small across all test cases. Most of the increase in total time comes from processing additional ray intersections.
 
 <table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
   <thead>
@@ -318,6 +328,8 @@ All tests were recorded on a testbed equipped with an AMD Ryzen 7 7435HS CPU (8 
 ### 5. Particle Simulation Scaling
 
 ![1,000,000 Particle Simulation Scaling](./media/particle_simulation_scaling.png)
+
+The table reports physics and rendering separately before combining them into the total frame time. At smaller workloads, rendering takes a larger share of the frame. As the particle count increases, the physics solver becomes a comparable part of the total cost.
 
 <table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
   <thead>
@@ -392,6 +404,8 @@ This replaces standard `sqrt` division routines and completes in ~10 clock cycle
 ---
 
 ## Comparison with Existing Systems
+
+This comparison outlines fundamental memory and architectural design choices rather than feature-by-feature parity with commercial engines.
 
 <table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
   <thead>
