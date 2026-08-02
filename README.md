@@ -27,7 +27,7 @@ Commands from the CLI or local voice parser enter the FL Protocol bridge. The br
 
 ## Performance Measurements
 
-All tests were recorded on a testbed equipped with an AMD Ryzen 7 7435HS CPU (8 cores, 16 threads), 16GB DDR5 RAM, and an NVIDIA RTX 4060 Mobile GPU running Vulkan 1.3 on Windows 11.
+All tests were recorded on a testbed equipped with an AMD Ryzen 7 7435HS CPU (8 cores, 16 threads), 24GB DDR5 RAM, and an NVIDIA RTX 4060 Mobile GPU running Vulkan 1.3 on Windows 11.
 
 ### 1. Memory Buffer Alignment (`PhysicsVramArena`)
 
