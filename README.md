@@ -3,13 +3,13 @@
 Titan Engine is a 3D rendering and physics engine written in Rust. It uses a lock-free memory substrate (FL Protocol) to process particle simulations and spatial data queries on consumer hardware.
 
 [![Live Benchmark Video](https://img.youtube.com/vi/1haMuwM62v4/maxresdefault.jpg)](https://youtu.be/1haMuwM62v4?si=GpvlQ68a1phvK1p4)  
-*Physics simulation with 1,000,000 active particles running on an AMD Ryzen 7 7435HS and RTX 4050 GPU.*
+*Physics simulation with 1,000,000 active particles running on an AMD Ryzen 7 7435HS and RTX 4060 GPU.*
 
 ---
 
 ## Technical Overview
 
-* **1,000,000 Particles**: Simulates 1M active GPU particles at ~12 FPS on consumer hardware (AMD Ryzen 7 7435HS / RTX 4050).
+* **1,000,000 Particles**: Simulates 1M active GPU particles at ~12 FPS on consumer hardware (AMD Ryzen 7 7435HS / RTX 4060).
 * **64-Byte Cache Alignment**: Data structures in the `PhysicsVramArena` are aligned to 64-byte cache boundaries to avoid DRAM padding waste.
 * **Raycasting**: Dispatches 100,000 concurrent ray queries without heap allocations, averaging ~0.18ms refit latency.
 * **Sub-Microsecond Search**: Index lookup times remain between 150ns and 310ns across datasets up to 100k files.
@@ -27,7 +27,7 @@ Commands from the CLI or local voice parser enter the FL Protocol bridge. The br
 
 ## Performance Measurements
 
-All tests were recorded on a testbed equipped with an AMD Ryzen 7 7435HS CPU (8 cores, 16 threads), 16GB DDR5 RAM, and an NVIDIA RTX 4050 Mobile GPU running Vulkan 1.3 on Windows 11.
+All tests were recorded on a testbed equipped with an AMD Ryzen 7 7435HS CPU (8 cores, 16 threads), 16GB DDR5 RAM, and an NVIDIA RTX 4060 Mobile GPU running Vulkan 1.3 on Windows 11.
 
 ### 1. Memory Buffer Alignment (`PhysicsVramArena`)
 
