@@ -2,7 +2,7 @@
 
 > **A lock-free memory substrate and 3D rendering engine built from scratch in Rust, designed to eliminate hardware efficiency bottlenecks and enable 1,000,000+ particle spatial simulation on commodity hardware.**
 
-[![Live Telemetry & Execution Proof](https://img.youtube.com/vi/1haMuwM62v4/maxresdefault.jpg)](https://youtu.be/1haMuwM62v4?si=GpvlQ68a1phvK1p4)
+[![Live Telemetry & Execution Proof](https://img.youtube.com/vi/1haMuwM62v4/maxresdefault.jpg)](https://youtu.be/1haMuwM62v4?si=GpvlQ68a1phvK1p4)  
 *Live Telemetry & Execution Proof: 1,000,000 GPU Particles & Zero-Allocation Raycasting on Commodity Hardware.*
 
 ---
@@ -20,34 +20,52 @@
 
 ## Generative Hardware-Software Execution Stack
 
-```
-+-----------------------------------------------------------------------+
-|                SYSTEM BOUNDARY / LOCAL HARDWARE RUNTIME               |
-|                                                                       |
-|  +---------------------------+       +-----------------------------+  |
-|  | 1. Telemetry Ingestion    |       | 2. Edge Inference Parser    |  |
-|  | Real-Time Voice Input     |=====> | Local Language Model        |  |
-|  | CLI Command Parsing       |       | Spatial Math Transpilation  |  |
-|  +---------------------------+       +-----------------------------+  |
-|                                                     ||                |
-|                                                     \/                |
-|                              +-------------------------------------+  |
-|                              | 3. FL PROTOCOL™ LOCK-FREE BRIDGE    |  |
-|                              +-------------------------------------+  |
-|                                                     ||                |
-|                                                     \/                |
-|  +-----------------------------------------------------------------+  |
-|  | 4. Titan Engine™ Hardware Execution Core                        |  |
-|  | XPBD Solver Pipeline | BVH Ray Traversal | Vulkan Rasterization |  |
-|  +-----------------------------------------------------------------+  |
-+-----------------------------------------------------------------------+
-```
+<div align="center" style="margin: 15px 0;">
+<svg viewBox="0 0 760 220" style="width:100%; max-width:760px; height:auto; background:#0f172a; border-radius:6px; padding:10px;">
+  <rect x="15" y="15" width="730" height="190" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="35" y="42" fill="#38bdf8" font-family="monospace" font-size="12.5" font-weight="700">SYSTEM BOUNDARY / LOCAL HARDWARE RUNTIME</text>
+  <rect x="35" y="60" width="220" height="65" rx="4" fill="#0f172a" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="48" y="83" fill="#e2e8f0" font-family="sans-serif" font-size="11" font-weight="700">1. Telemetry Ingestion</text>
+  <text x="48" y="101" fill="#94a3b8" font-family="sans-serif" font-size="9.5">Real-Time Voice Input & CLI</text>
+  <path d="M 255 92.5 L 295 92.5" stroke="#38bdf8" stroke-width="2" marker-end="url(#arr)"/>
+  <rect x="300" y="60" width="220" height="65" rx="4" fill="#0f172a" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="313" y="83" fill="#e2e8f0" font-family="sans-serif" font-size="11" font-weight="700">2. Edge Inference Parser</text>
+  <text x="313" y="101" fill="#94a3b8" font-family="sans-serif" font-size="9.5">Local LLM & Math Transpilation</text>
+  <path d="M 410 125 L 410 145" stroke="#38bdf8" stroke-width="2"/>
+  <rect x="180" y="145" width="460" height="42" rx="4" fill="#0369a1" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="210" y="171" fill="#ffffff" font-family="sans-serif" font-size="12" font-weight="700">3. FL PROTOCOL™ LOCK-FREE MEMORY SUBSTRATE & TITAN ENGINE™ CORE</text>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#38bdf8"/>
+    </marker>
+  </defs>
+</svg>
+</div>
 
 ---
 
 ## Empirical Telemetry & Benchmark Audit Logs
 
 ### 1. 64-Byte Hardware Cache Line Substrate Alignment Proof (`PhysicsVramArena`)
+
+<div align="center" style="margin: 15px 0;">
+<svg viewBox="0 0 460 160" style="width:100%; max-width:500px; height:auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; padding:10px;">
+  <line x1="60" y1="20" x2="440" y2="20" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="60" y1="65" x2="440" y2="65" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="60" y1="110" x2="440" y2="110" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="50" y="24" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">24.0 GB</text>
+  <text x="50" y="69" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">12.0 GB</text>
+  <text x="50" y="114" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">0.0 GB</text>
+  <rect x="110" y="20" width="70" height="90" fill="#0f2346" rx="2"/>
+  <text x="145" y="14" font-size="9" font-weight="bold" fill="#0f2346" text-anchor="middle">24.0 GB</text>
+  <text x="145" y="130" font-size="8.5" font-weight="700" fill="#475569" text-anchor="middle">Industry Baseline</text>
+  <text x="145" y="144" font-size="7.5" fill="#64748b" text-anchor="middle">(Un-aligned Engine Allocation)</text>
+  <rect x="290" y="60" width="70" height="50" fill="#2c5eff" rx="2"/>
+  <text x="325" y="52" font-size="9" font-weight="bold" fill="#2c5eff" text-anchor="middle">13.5 GB</text>
+  <text x="325" y="130" font-size="8.5" font-weight="700" fill="#2c5eff" text-anchor="middle">Titan Engine (FL Protocol)</text>
+  <text x="325" y="144" font-size="7.5" fill="#2c5eff" text-anchor="middle">(64-Byte Hardware Aligned)</text>
+</svg>
+</div>
 
 | Memory Sub-Region | Contiguous BDA Data Structure | Array Size (1M Particles) | 64-Byte Cache Lines | Alignment Padding Waste | L1/L2 Cache Line Efficiency |
 | --- | --- | --- | --- | --- | --- |
@@ -57,6 +75,33 @@
 | Material & Thermodynamic | MatProperty[1,000,000] (64-Byte Full Line) | 64.0 MB | 1,048,576 | **0 Bytes** | **100.0%** |
 
 ### 2. Pure FL Protocol™ Testing Achievements & Benchmark Performance Logs
+
+<div align="center" style="margin: 15px 0;">
+<svg viewBox="0 0 460 160" style="width:100%; max-width:500px; height:auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; padding:10px;">
+  <line x1="60" y1="20" x2="440" y2="20" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="60" y1="65" x2="440" y2="65" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="60" y1="110" x2="440" y2="110" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="50" y="24" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">1,000 ns</text>
+  <text x="50" y="69" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">500 ns</text>
+  <text x="50" y="114" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">0 ns</text>
+  <path d="M90 95 Q200 60 410 24" fill="none" stroke="#0f2346" stroke-width="2" stroke-dasharray="4 4"/>
+  <text x="390" y="18" font-size="8" font-weight="bold" fill="#0f2346">Traditional Search O(N log N)</text>
+  <path d="M90 90 L195 96 L300 86 L410 82" fill="none" stroke="#2c5eff" stroke-width="3"/>
+  <circle cx="90" cy="90" r="3.5" fill="#2c5eff"/>
+  <circle cx="195" cy="96" r="3.5" fill="#2c5eff"/>
+  <circle cx="300" cy="86" r="3.5" fill="#2c5eff"/>
+  <circle cx="410" cy="82" r="3.5" fill="#2c5eff"/>
+  <text x="90" y="80" font-size="7.5" font-weight="bold" fill="#2c5eff" text-anchor="middle">220ns</text>
+  <text x="195" y="86" font-size="7.5" font-weight="bold" fill="#2c5eff" text-anchor="middle">150ns</text>
+  <text x="300" y="74" font-size="7.5" font-weight="bold" fill="#2c5eff" text-anchor="middle">260ns</text>
+  <text x="410" y="70" font-size="7.5" font-weight="bold" fill="#2c5eff" text-anchor="middle">310ns</text>
+  <text x="270" y="104" font-size="8.5" font-weight="bold" fill="#2c5eff">FL Protocol O(1) Flat Curve (150ns - 310ns)</text>
+  <text x="90" y="132" font-size="8" fill="#64748b" text-anchor="middle">100 Files</text>
+  <text x="195" y="132" font-size="8" fill="#64748b" text-anchor="middle">1,000 Files</text>
+  <text x="300" y="132" font-size="8" fill="#64748b" text-anchor="middle">5,000 Files</text>
+  <text x="410" y="132" font-size="8" fill="#64748b" text-anchor="middle">100,000 Files (Est.)</text>
+</svg>
+</div>
 
 #### A. Document Search & Scale Tier Benchmark Matrix
 | Dataset Scale (Files) | Substrate Index Nodes | Cold Rebuild (ms) | Warm Rebuild (ms) | Live Active RAM (MB) | Mean Query Latency | Lookup Complexity |
@@ -91,6 +136,25 @@
 
 ### 3. PCIe Streaming Latency & GPU Warp Occupancy Audit (ReBAR DMA)
 
+<div align="center" style="margin: 15px 0;">
+<svg viewBox="0 0 460 140" style="width:100%; max-width:500px; height:auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; padding:10px;">
+  <line x1="60" y1="15" x2="440" y2="15" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="60" y1="55" x2="440" y2="55" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="60" y1="95" x2="440" y2="95" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="50" y="19" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">40,000 ns</text>
+  <text x="50" y="59" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">20,000 ns</text>
+  <text x="50" y="99" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">0 ns</text>
+  <rect x="110" y="25" width="70" height="70" fill="#0f2346" rx="2"/>
+  <text x="145" y="18" font-size="9" font-weight="bold" fill="#0f2346" text-anchor="middle">35,000 ns</text>
+  <text x="145" y="112" font-size="8.5" font-weight="700" fill="#475569" text-anchor="middle">Traditional Staging</text>
+  <text x="145" y="124" font-size="7.5" fill="#64748b" text-anchor="middle">(PCIe DMA Copy)</text>
+  <rect x="290" y="93" width="70" height="2" fill="#2c5eff" rx="1"/>
+  <text x="325" y="86" font-size="9" font-weight="bold" fill="#2c5eff" text-anchor="middle">100 ns</text>
+  <text x="325" y="112" font-size="8.5" font-weight="700" fill="#2c5eff" text-anchor="middle">Titan ReBAR Emitter</text>
+  <text x="325" y="124" font-size="7.5" fill="#2c5eff" text-anchor="middle">(64-Byte Write-Combine)</text>
+</svg>
+</div>
+
 | Metric Category | Observed Telemetry Metric | Benchmark Target Criteria | Compliance Status |
 | --- | --- | --- | --- |
 | ReBAR DMA Throughput | **12.4 GB/s** | > 10.0 GB/s | PASS |
@@ -100,6 +164,33 @@
 
 ### 4. Production Raycasting & Dynamic BVH Refitting Latency Audit
 
+<div align="center" style="margin: 15px 0;">
+<svg viewBox="0 0 460 160" style="width:100%; max-width:500px; height:auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; padding:10px;">
+  <line x1="60" y1="20" x2="440" y2="20" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="60" y1="65" x2="440" y2="65" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="60" y1="110" x2="440" y2="110" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="50" y="24" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">3,000 ns</text>
+  <text x="50" y="69" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">1,500 ns</text>
+  <text x="50" y="114" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">0 ns</text>
+  <rect x="80" y="97" width="55" height="13" fill="#2c5eff" rx="2"/>
+  <text x="107" y="90" font-size="8.5" font-weight="bold" fill="#2c5eff" text-anchor="middle">420 ns</text>
+  <text x="107" y="130" font-size="8" font-weight="700" fill="#2c5eff" text-anchor="middle">Any-Hit Exit</text>
+  <text x="107" y="144" font-size="7" fill="#64748b" text-anchor="middle">(Shadow Query)</text>
+  <rect x="175" y="86" width="55" height="24" fill="#0f2346" rx="2"/>
+  <text x="202" y="78" font-size="8.5" font-weight="bold" fill="#0f2346" text-anchor="middle">800 ns</text>
+  <text x="202" y="130" font-size="8" font-weight="700" fill="#475569" text-anchor="middle">Coalesced Ray</text>
+  <text x="202" y="144" font-size="7" fill="#64748b" text-anchor="middle">(Spatial Hit)</text>
+  <rect x="270" y="34" width="55" height="76" fill="#475569" rx="2"/>
+  <text x="297" y="27" font-size="8.5" font-weight="bold" fill="#475569" text-anchor="middle">2,530 ns</text>
+  <text x="297" y="130" font-size="8" font-weight="700" fill="#475569" text-anchor="middle">Closest Hit</text>
+  <text x="297" y="144" font-size="7" fill="#64748b" text-anchor="middle">(Full Traversal)</text>
+  <rect x="365" y="20" width="55" height="90" fill="#64748b" rx="2"/>
+  <text x="392" y="14" font-size="8.5" font-weight="bold" fill="#64748b" text-anchor="middle">3,000 ns</text>
+  <text x="392" y="130" font-size="8" font-weight="700" fill="#64748b" text-anchor="middle">Uncoalesced</text>
+  <text x="392" y="144" font-size="7" fill="#64748b" text-anchor="middle">(Random Memory)</text>
+</svg>
+</div>
+
 | Active Ray Queries | BVH Refitting Time | Ray Intersection Time | Total Pipeline Latency | Heap Allocation per Query | Frame Rate (FPS) |
 | --- | --- | --- | --- | --- | --- |
 | 10,000 Rays | 0.04 ms | 0.12 ms | 0.16 ms | **0 Bytes** | 60.0 FPS |
@@ -107,6 +198,33 @@
 | 100,000 Rays | 0.18 ms | 0.94 ms | 1.12 ms | **0 Bytes** | 60.0 FPS |
 
 ### 5. 1,000,000 Particle Simulation Scaling & Hardware GPU Split
+
+<div align="center" style="margin: 15px 0;">
+<svg viewBox="0 0 460 140" style="width:100%; max-width:500px; height:auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; padding:10px;">
+  <line x1="60" y1="15" x2="440" y2="15" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="60" y1="55" x2="440" y2="55" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="60" y1="95" x2="440" y2="95" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="50" y="19" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">10.0 ms</text>
+  <text x="50" y="59" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">5.0 ms</text>
+  <text x="50" y="99" font-size="8" font-weight="600" fill="#64748b" text-anchor="end">0.0 ms</text>
+  <rect x="130" y="56" width="60" height="39" fill="#0f2346" rx="1"/>
+  <text x="160" y="78" font-size="7.5" font-weight="bold" fill="#ffffff" text-anchor="middle">4.82ms</text>
+  <rect x="130" y="30" width="60" height="26" fill="#2c5eff" rx="1"/>
+  <text x="160" y="46" font-size="7.5" font-weight="bold" fill="#ffffff" text-anchor="middle">3.28ms</text>
+  <rect x="130" y="28" width="60" height="2" fill="#64748b" rx="1"/>
+  <text x="160" y="20" font-size="8.5" font-weight="bold" fill="#0f2346" text-anchor="middle">8.39 ms</text>
+  <text x="160" y="112" font-size="8" font-weight="700" fill="#475569" text-anchor="middle">Frame 300 Audit</text>
+  <text x="160" y="124" font-size="7" fill="#64748b" text-anchor="middle">(Steady State)</text>
+  <rect x="290" y="55" width="60" height="40" fill="#0f2346" rx="1"/>
+  <text x="320" y="77" font-size="7.5" font-weight="bold" fill="#ffffff" text-anchor="middle">5.02ms</text>
+  <rect x="290" y="29" width="60" height="26" fill="#2c5eff" rx="1"/>
+  <text x="320" y="45" font-size="7.5" font-weight="bold" fill="#ffffff" text-anchor="middle">3.30ms</text>
+  <rect x="290" y="26" width="60" height="3" fill="#64748b" rx="1"/>
+  <text x="320" y="18" font-size="8.5" font-weight="bold" fill="#0f2346" text-anchor="middle">8.60 ms</text>
+  <text x="320" y="112" font-size="8" font-weight="700" fill="#475569" text-anchor="middle">Frame 600 Audit</text>
+  <text x="320" y="124" font-size="7" fill="#64748b" text-anchor="middle">(Steady State)</text>
+</svg>
+</div>
 
 | Active Particle Count | Solver Time (XPBD) | Rendering Time (Vulkan) | Total Frame Latency | Measured Frame Rate | VRAM Memory Allocated |
 | --- | --- | --- | --- | --- | --- |
@@ -149,53 +267,29 @@ This drops execution to ~10 cycles while maintaining $10^{-6}$ precision.
 
 ---
 
-## Commercial Strategy & Unbundled Micro-Services
-
-### Tiered Commercialization Model
-| Licensing Tier | Target Customer Segment | Pricing Structure | Value Proposition & Capabilities |
-| --- | --- | --- | --- |
-| **Tier 1A: Full Suite Engine License** | Local Startups, SMEs & Regional Developers | **₹70,000 / Year Flat Fee** | Full access to Titan Engine SDK, VRAM optimization, and O(1) search indexing on consumer hardware. |
-| **Tier 1B: Unbundled Modular APIs** | Robotics Labs, Game Studios & AI Developers | **Quarterly SaaS per Subsystem Module** | Standalone access to individual engine components (e.g., XPBD Solver, Vulkan Renderer, Lock-Free Memory Core). |
-| **Tier 2: Enterprise & Defense On-Premise** | Aerospace, Defense & Heavy Industry | **₹5,00,000 / Year (Includes SLA)** | Air-gapped, self-hosted deployment with dedicated technical maintenance and custom engine modules. |
-| **Tier 3: Public Sector RTPP Procurement** | Government Departments (DoIT&C, Smart City) | **Non-Tendered Direct Work Orders** | Customized municipal GIS / Smart City digital twin modules under official state procurement provisions. |
-
-### Unbundled SaaS API Matrix
-| Standalone Module API | Core Subsystem Capabilities | Target Application Use Case | Quarterly SaaS Rate |
-| --- | --- | --- | --- |
-| **1. Titan Lock-Free Memory Core (FL Protocol™)** | High-speed lock-free memory management featuring zero-overhead vector indexing | Enterprise RAG AI, zero-lock databases | **₹4,700 / 3-Months** |
-| **2. Titan XPBD Physics & Collision Solver API** | Robust physics solver with accurate continuous collision and hardware-accelerated spatial partitioning | Robotics simulation, game physics & kinematics | **₹5,700 / 3-Months** |
-| **3. Titan Vulkan Renderer & Raycasting Core** | Modern Vulkan rendering pipeline with zero-allocation ray queries and fast dynamic scene updates | Spatial digital twins, architectural rendering | **₹6,700 / 3-Months** |
-| **4. Titan GPU Scheduler & PCIe ReBAR DMA Emitter** | Ultra low-latency GPU scheduling and direct memory streaming for maximum hardware utilization | Edge AI platforms, PCIe streaming & HPC | **₹4,700 / 3-Months** |
-| **5. Titan GI Radiance Cascades & Particle Subsystem** | Cinematic real-time global illumination and massive interactive particle systems at high frame rates | VFX production, environmental graphics | **₹5,700 / 3-Months** |
-| **6. MOGA™ (Multi-Objective Genetic Algorithm)** | Automated 3D asset optimization, intelligent geometry compression, and procedural LOD generation | Automated 3D asset pipelines & CAD processing | **₹3,700 / 3-Months** |
-| **7. TEAF™ (Engine Analytics Framework)** | Deep-level performance profiling, execution tracing, and real-time VRAM health analytics | Deep-tech debugging & hardware diagnostics | **₹2,700 / 3-Months** |
-
----
-
 ## Grounded Competitive Moat Matrix
 
-| Technical & Commercial Feature | Legacy 3D Engines (Unreal / Unity) | Legacy Vector Databases (Elasticsearch) | Titan Engine™ (FL Protocol™) |
+| Technical Feature | Legacy 3D Engines (Unreal / Unity) | Legacy Vector Databases (Elasticsearch) | Titan Engine™ (FL Protocol™) |
 | --- | --- | --- | --- |
 | **Memory Hierarchy** | Object-Oriented (Unaligned Padding) | JVM Garbage Collected Arrays | **64-Byte Cache Line Deterministic Alignment** |
 | **Hardware Constraint** | High-End Workstation / Cloud GPUs | Massive Cloud RAM Footprints | **High Performance on Consumer Hardware** |
 | **Search Query Latency** | O(N log N) Traversal Hierarchies | Linear / Graph Search Stalls | **O(1) Flat Sub-Microsecond Search (150ns)** |
 | **VRAM Footprint Overhead** | Extreme Overhead per Mesh Object | Large Embedding Storage Overhead | **43.7% Verified Peak VRAM Reduction** |
-| **Commercial Pricing Model** | 5% Revenue Royalties + Heavy Hardware | $10k-$100k Monthly Server Bills | **Flat ₹70,000 / Year Accessible License** |
 
 ---
 
 ## Strategic Industry Expansion Verticals
 
-| Expansion Industry Vertical | Target Commercial Industry Demand | FL Protocol™ Future Substrate Role | Target Commercial Market Segment |
+| Expansion Industry Vertical | Target Industry Technical Demand | FL Protocol™ Substrate Role | Target Technical Application |
 | --- | --- | --- | --- |
-| **1. Digital Twins & Smart Infrastructure** | Factory & Municipal Real-Time World Simulation | Distributed World State Spatial Indexing | Enterprise Industrial Software Providers |
-| **2. Robotics & Autonomous Kinematics** | Robot Sensor Kinematics & Spatial Mapping | Kinematic Sensor Memory & Map Layout | Autonomous System & Robotics Manufacturers |
-| **3. Autonomous Vehicle Perception** | Real-Time Sensor Fusion & Object Indexing | Spatial Memory Fusion & Range Query Substrate | Automotive OEM & Autonomous Software Vendors |
-| **4. GIS & Geographic Spatial Systems** | Large-Scale Terrain & Spatial Databases | Multi-Layered GIS Spatial Memory Layout | Defense & Urban Infrastructure Providers |
-| **5. Medical Volumetric Data Analytics** | 3D CT / MRI Scan & Volume Rendering | Compact Volumetric Data Memory & Indexing | Healthcare Technology & Medical Imaging Vendors |
-| **6. CAD / CAM & Semiconductor EDA** | 3D Geometry Processing & Mesh Storage | Circuit Database Storage & Primitive Lookup | Industrial Engineering & Chip Design Vendors |
-| **7. Embedded Edge Computing** | Low-Power IoT & Autonomous Edge Compute | Compact Low-Footprint Substrate Architecture | Edge Appliance & IoT Device Manufacturers |
-| **8. Cybersecurity Threat Intelligence** | High-Speed Log Stream & Threat Lookup | Zero-Lock Log Buffer Memory Indexing | Enterprise Cybersecurity Infrastructure Vendors |
+| **1. Digital Twins & Smart Infrastructure** | Factory & Municipal Real-Time World Simulation | Distributed World State Spatial Indexing | Spatial Digital Twins & Municipal Engines |
+| **2. Robotics & Autonomous Kinematics** | Robot Sensor Kinematics & Spatial Mapping | Kinematic Sensor Memory & Map Layout | Autonomous System & Robotics Kinematics |
+| **3. Autonomous Vehicle Perception** | Real-Time Sensor Fusion & Object Indexing | Spatial Memory Fusion & Range Query Substrate | Autonomous Sensor Perception Engines |
+| **4. GIS & Geographic Spatial Systems** | Large-Scale Terrain & Spatial Databases | Multi-Layered GIS Spatial Memory Layout | Defense & Urban GIS Infrastructure |
+| **5. Medical Volumetric Data Analytics** | 3D CT / MRI Scan & Volume Rendering | Compact Volumetric Data Memory & Indexing | Medical Imaging & Volumetric Analytics |
+| **6. CAD / CAM & Semiconductor EDA** | 3D Geometry Processing & Mesh Storage | Circuit Database Storage & Primitive Lookup | Industrial Engineering & CAD Processing |
+| **7. Embedded Edge Computing** | Low-Power IoT & Autonomous Edge Compute | Compact Low-Footprint Substrate Architecture | Edge Appliance & IoT Embedded Compute |
+| **8. Cybersecurity Threat Intelligence** | High-Speed Log Stream & Threat Lookup | Zero-Lock Log Buffer Memory Indexing | Enterprise Log Stream Search Substrates |
 
 ---
 
@@ -203,14 +297,13 @@ This drops execution to ~10 cycles while maintaining $10^{-6}$ precision.
 
 | R&D Workstream | Technical Focus & Research Scope | Engineering Deliverables |
 | --- | --- | --- |
-| **1. Engineering Team Expansion** | Recruiting specialized systems programmers, graphics engineers, tooling developers, and QA engineers. | Dedicated core R&D engineering team for substrate & engine acceleration. |
-| **2. Production SDK & Tooling** | Packaging standalone developer SDKs, public API gateways, developer documentation, and reference implementations. | Developer-ready C/Rust SDKs and comprehensive technical documentation. |
-| **3. Subsystem Optimization** | Deep performance profiling and tuning across rendering, memory allocation, physics, and Vulkan GPU compute pipelines. | Zero-overhead execution stability and cross-platform hardware optimization. |
-| **4. Production Editor UI/UX** | Designing a clean, reliable, developer-friendly editor UI/UX and integrated toolchain for asset pipelines. | Production-grade engine editor and interactive developer toolset. |
-| **5. Advanced Physics & Simulation** | Researching and engineering high-end physics solvers, ragdoll physics systems, and constraint simulation solvers. | Stable, high-fidelity rigid body, ragdoll, and kinematics physics suite. |
-| **6. Global Illumination (GI) Maturation** | Maturing real-time Global Illumination algorithms and radiance cascade pipelines for complex lighting scenarios. | Production-ready real-time GI rendering pipeline. |
-| **7. Automated 3D Retopology Research** | R&D into automated 3D mesh retopology algorithms to streamline high-density 3D asset optimization and LOD generation. | Automated mesh retopology & geometry decimation subsystem. |
-| **8. FL Protocol™ Expansion** | Extending the 64-byte lock-free substrate into AI infrastructure, RAG vector indexing, enterprise databases, and cloud runtimes. | Multi-domain FL Protocol™ substrate bindings for AI & cloud workloads. |
+| **1. Core Systems Optimization** | Deep performance profiling and tuning across rendering, memory allocation, physics, and Vulkan GPU compute pipelines. | Zero-overhead execution stability and cross-platform hardware optimization. |
+| **2. Standalone C/Rust SDK** | Packaging standalone developer SDKs, public API gateways, developer documentation, and reference implementations. | Developer-ready C/Rust SDKs and comprehensive technical documentation. |
+| **3. Engine Analytics Suite** | Deep-level performance profiling, execution tracing, and real-time VRAM health analytics toolset. | Hardware performance profiling & diagnostic framework. |
+| **4. Advanced Physics Solvers** | Researching and engineering high-end physics solvers, ragdoll physics systems, and constraint simulation solvers. | Stable, high-fidelity rigid body, ragdoll, and kinematics physics suite. |
+| **5. Global Illumination (GI)** | Maturing real-time Global Illumination algorithms and radiance cascade pipelines for complex lighting scenarios. | Production-ready real-time GI rendering pipeline. |
+| **6. Automated 3D Retopology** | R&D into automated 3D mesh retopology algorithms to streamline high-density 3D asset optimization and LOD generation. | Automated mesh retopology & geometry decimation subsystem. |
+| **7. FL Protocol™ Expansion** | Extending the 64-byte lock-free substrate into AI infrastructure, RAG vector indexing, enterprise databases, and cloud runtimes. | Multi-domain FL Protocol™ substrate bindings for AI & spatial workloads. |
 
 ### Technical Risk Matrix
 | Risk Category | Identified Technical Challenge | Engineering Mitigation Strategy | Status |
@@ -222,3 +315,7 @@ This drops execution to ~10 cycles while maintaining $10^{-6}$ precision.
 ---
 
 ## Developed by SHAP Studio
+
+- **Developer / Founder**: Ameen Ullah Khan
+- **Studio Location**: Tonk, Rajasthan, India
+- **Technology Focus**: Bare-Metal 3D Physics Engines, Real-Time Vulkan Graphics, and Spatial Memory Substrates
