@@ -187,6 +187,6 @@ This drops execution to ~10 cycles while maintaining $10^{-6}$ precision.
 
 ## Developed by SHAP Studio
 
-**Developer / Founder**: Ameen Ullah Khan
+- **Developer / Founder**: Ameen Ullah Khan
 - **Studio Location**: Tonk, Rajasthan, India
 - **Technology Focus**: Bare-Metal 3D Physics Engines, Real-Time Vulkan Graphics, and Spatial Memory Substrates
