@@ -405,7 +405,7 @@ This replaces standard `sqrt` division routines and completes in ~10 clock cycle
 
 ## Comparison with Existing Systems
 
-This comparison outlines fundamental memory and architectural design choices rather than feature-by-feature parity with commercial engines.
+This comparison outlines fundamental memory layout and architectural design choices rather than direct feature-by-feature parity. Metrics for Titan Engine reflect empirical testbed measurements, while legacy baseline entries represent standard architectural specifications.
 
 <table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;">
   <thead>
