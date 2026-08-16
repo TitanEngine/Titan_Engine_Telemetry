@@ -459,5 +459,5 @@ This comparison outlines fundamental memory layout and architectural design choi
 ## Author & Project Info
 
 * **Developer**: Ameen Ullah Khan
-* **Studio**: SHAP Studio (Tonk, Rajasthan, India)
+* **Studio**: SHAP Studio 
 * **Stack**: Rust, Vulkan 1.3, C/C++
